@@ -1,4 +1,11 @@
-import 'dotenv/config';
+import dotenv from 'dotenv';
+import path from 'path';
+
+// Prioridad 1: .env en la raíz del monorepo (../../ desde dist/ o src/)
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+// Prioridad 2: .env local del backend (si existe, no sobreescribe ya cargadas)
+dotenv.config();
+
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';

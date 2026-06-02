@@ -1,0 +1,82 @@
+name: Deploy RecipeHub
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Instalar dependencias del backend
+        run: cd backend && npm ci
+
+      - name: Compilar TypeScript
+        run: cd backend && npm run build
+
+      - name: Correr tests
+        run: cd backend && npm test
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test_secret_for_ci
+          MONGO_URI: mongodb://localhost:27017/recipehub_test
+          PORT: 4000
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy por SSH al VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            set -e
+
+            cd /root/recipehub
+            git pull origin main
+
+            # Crear .env con los 5 secrets — nunca aparecen en logs
+            cat > .env << 'ENVEOF'
+            PORT=4000
+            MONGO_URI=${{ secrets.MONGO_URI }}
+            JWT_SECRET=${{ secrets.JWT_SECRET }}
+            FRONTEND_URL=https://app.recipehub.me
+            NODE_ENV=production
+            MONGO_INITDB_ROOT_USERNAME=mongo_user
+            MONGO_INITDB_ROOT_PASSWORD=mongo_pass_seguro
+            ENVEOF
+
+            # Build del frontend
+            cd frontend
+            npm ci
+            npm run build
+            cd ..
+
+            # Copiar build al directorio de Nginx
+            mkdir -p /var/www/recipehub/frontend
+            cp -r frontend/dist /var/www/recipehub/frontend/
+
+            # Levantar contenedores
+            docker compose down
+            docker compose up -d --build
+
+            # Esperar que arranque
+            sleep 15
+
+            # Health check final
+            curl -f https://api.recipehub.me/api/health || exit 1
+
+            echo "✅ Deploy completado exitosamente"
