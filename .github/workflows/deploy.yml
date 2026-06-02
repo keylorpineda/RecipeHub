@@ -61,12 +61,12 @@ jobs:
             # Crear .env con los 5 secrets — nunca aparecen en logs
             cat > .env << 'ENVEOF'
             PORT=4000
+            MONGO_INITDB_ROOT_USERNAME=mongo_user
+            MONGO_INITDB_ROOT_PASSWORD=mongo_pass_seguro
             MONGO_URI=${{ secrets.MONGO_URI }}
             JWT_SECRET=${{ secrets.JWT_SECRET }}
             FRONTEND_URL=https://app.recipehub.me
             NODE_ENV=production
-            MONGO_INITDB_ROOT_USERNAME=mongo_user
-            MONGO_INITDB_ROOT_PASSWORD=mongo_pass_seguro
             ENVEOF
 
             # Build del frontend
