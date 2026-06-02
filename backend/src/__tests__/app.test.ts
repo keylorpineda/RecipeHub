@@ -53,7 +53,7 @@ describe('POST /api/auth/register', () => {
     expect(first.body).toHaveProperty('user');
     expect(first.body).not.toHaveProperty('token'); // token ya no va en el body
 
-    const setCookie = first.headers['set-cookie'] as string[] | undefined;
+    const setCookie = first.headers['set-cookie'] as unknown as string[] | undefined;
     expect(setCookie).toBeDefined();
     expect(setCookie!.some((c) => c.startsWith('token='))).toBe(true);
 
@@ -91,7 +91,7 @@ describe('GET /api/auth/me', () => {
     expect(registerRes.status).toBe(201);
 
     // Extraer el valor de la cookie 'token'
-    const setCookie = registerRes.headers['set-cookie'] as string[];
+    const setCookie = registerRes.headers['set-cookie'] as unknown as string[];
     const tokenCookie = setCookie.find((c) => c.startsWith('token='))!;
 
     // Usar la cookie en la ruta protegida

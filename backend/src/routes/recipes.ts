@@ -83,7 +83,7 @@ router.put('/:id', authMiddleware, async (req: Request, res: Response) => {
 
     for (const campo of campos) {
       if (req.body[campo] !== undefined) {
-        (receta as Record<string, unknown>)[campo] = req.body[campo];
+        (receta as unknown as Record<string, unknown>)[campo] = req.body[campo];
       }
     }
 
