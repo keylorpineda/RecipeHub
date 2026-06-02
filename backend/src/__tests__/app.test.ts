@@ -38,19 +38,25 @@ describe('GET /api/health', () => {
   });
 });
 
-// ─── TEST 2: Register con email duplicado ─────────────────────────────────────
+// ─── TEST 2: Register — cookie presente y email duplicado ─────────────────────
 
 describe('POST /api/auth/register', () => {
-  it('retorna 400 con error al registrar un email ya existente', async () => {
+  it('setea la cookie token en el primer registro y retorna 400 en el segundo', async () => {
     const payload = {
       nombre: 'Usuario Test',
       email: 'test@example.com',
       password: 'password123',
     };
 
-    // Primer registro: debe tener éxito
+    // Primer registro: debe tener éxito y enviar la cookie
     const first = await request(app).post('/api/auth/register').send(payload);
     expect(first.status).toBe(201);
+    expect(first.body).toHaveProperty('user');
+    expect(first.body).not.toHaveProperty('token'); // token ya no va en el body
+
+    const setCookie = first.headers['set-cookie'] as string[] | undefined;
+    expect(setCookie).toBeDefined();
+    expect(setCookie!.some((c) => c.startsWith('token='))).toBe(true);
 
     // Segundo registro con el mismo email: debe fallar
     const second = await request(app).post('/api/auth/register').send(payload);
@@ -68,6 +74,40 @@ describe('POST /api/auth/login', () => {
       password: 'cualquier_pass',
     });
 
+    expect(res.status).toBe(401);
+    expect(res.body).toHaveProperty('error');
+  });
+});
+
+// ─── TEST 4: Ruta protegida usando cookie ─────────────────────────────────────
+
+describe('GET /api/auth/me', () => {
+  it('retorna el usuario autenticado cuando se envía la cookie token', async () => {
+    // Registrar para obtener la cookie
+    const registerRes = await request(app).post('/api/auth/register').send({
+      nombre: 'Cookie User',
+      email: 'cookie@example.com',
+      password: 'securepass',
+    });
+    expect(registerRes.status).toBe(201);
+
+    // Extraer el valor de la cookie 'token'
+    const setCookie = registerRes.headers['set-cookie'] as string[];
+    const tokenCookie = setCookie.find((c) => c.startsWith('token='))!;
+
+    // Usar la cookie en la ruta protegida
+    const meRes = await request(app)
+      .get('/api/auth/me')
+      .set('Cookie', tokenCookie);
+
+    expect(meRes.status).toBe(200);
+    expect(meRes.body).toHaveProperty('user');
+    expect(meRes.body.user).toMatchObject({ email: 'cookie@example.com' });
+    expect(meRes.body.user).not.toHaveProperty('password');
+  });
+
+  it('retorna 401 sin cookie ni header Authorization', async () => {
+    const res = await request(app).get('/api/auth/me');
     expect(res.status).toBe(401);
     expect(res.body).toHaveProperty('error');
   });

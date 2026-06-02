@@ -6,6 +6,13 @@ import authMiddleware, { AuthRequest } from '../middleware/auth';
 
 const router = Router();
 
+const COOKIE_OPTIONS = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'strict' as const,
+  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 días
+};
+
 function signToken(userId: unknown): string {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET!, { expiresIn: '7d' });
 }
@@ -38,7 +45,8 @@ router.post('/register', async (req: Request, res: Response) => {
     const user = await User.create({ nombre, email, password: hashed });
     const token = signToken(user._id);
 
-    return res.status(201).json({ token, user: sanitizeUser(user) });
+    res.cookie('token', token, COOKIE_OPTIONS);
+    return res.status(201).json({ user: sanitizeUser(user) });
   } catch (err) {
     return res.status(500).json({ error: (err as Error).message });
   }
@@ -64,10 +72,17 @@ router.post('/login', async (req: Request, res: Response) => {
     }
 
     const token = signToken(user._id);
-    return res.status(200).json({ token, user: sanitizeUser(user) });
+    res.cookie('token', token, COOKIE_OPTIONS);
+    return res.status(200).json({ user: sanitizeUser(user) });
   } catch (err) {
     return res.status(500).json({ error: (err as Error).message });
   }
+});
+
+// POST /api/auth/logout
+router.post('/logout', (_req: Request, res: Response) => {
+  res.clearCookie('token');
+  return res.status(200).json({ message: 'Sesión cerrada' });
 });
 
 // GET /api/auth/me

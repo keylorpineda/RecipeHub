@@ -10,13 +10,13 @@ export default function authMiddleware(
   res: Response,
   next: NextFunction,
 ): Response | void {
-  const authHeader = req.headers['authorization'];
+  // Cookie HttpOnly tiene prioridad; header Authorization como fallback para Postman/tests
+  const token: string | undefined =
+    req.cookies?.token ?? req.headers.authorization?.split(' ')[1];
 
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+  if (!token) {
     return res.status(401).json({ error: 'Token requerido' });
   }
-
-  const token = authHeader.slice(7);
 
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET!) as { id: string };

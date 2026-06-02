@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express, { Request, Response } from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
 
 import authRouter from './routes/auth';
@@ -11,8 +12,12 @@ import authMiddleware, { AuthRequest } from './middleware/auth';
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'https://app.recipehub.me',
+  credentials: true,
+}));
 app.use(express.json());
+app.use(cookieParser());
 
 app.use('/api/auth', authRouter);
 app.use('/api/recetas', recipesRouter);
