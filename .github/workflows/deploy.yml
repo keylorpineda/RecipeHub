@@ -83,10 +83,18 @@ jobs:
             docker compose down
             docker compose up -d --build
 
-            # Esperar que arranque
-            sleep 15
+            # Esperar que MongoDB y la API arranquen completamente
+            sleep 30
 
-            # Health check final
-            curl -f https://api.recipehub.me/api/health || exit 1
+            # Health check con reintentos
+            for i in 1 2 3 4 5; do
+              echo "Health check intento $i..."
+              if curl -f https://api.recipehub.me/api/health; then
+                echo "✅ Deploy completado exitosamente"
+                exit 0
+              fi
+              sleep 10
+            done
 
-            echo "✅ Deploy completado exitosamente"
+            echo "❌ Health check falló después de 5 intentos"
+            exit 1
