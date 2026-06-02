@@ -42,18 +42,23 @@ app.get('/api/health', (_req: Request, res: Response) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-const PORT: number = parseInt(process.env.PORT ?? '4000', 10);
-const MONGO_URI: string = process.env.MONGO_URI!;
+export default app;
 
-mongoose
-  .connect(MONGO_URI)
-  .then(() => {
-    console.log('Conectado a MongoDB');
-    app.listen(PORT, () => {
-      console.log(`Servidor corriendo en el puerto ${PORT}`);
+// Solo arranca el servidor cuando el archivo se ejecuta directamente
+if (require.main === module) {
+  const PORT: number = parseInt(process.env.PORT ?? '4000', 10);
+  const MONGO_URI: string = process.env.MONGO_URI!;
+
+  mongoose
+    .connect(MONGO_URI)
+    .then(() => {
+      console.log('Conectado a MongoDB');
+      app.listen(PORT, () => {
+        console.log(`Servidor corriendo en el puerto ${PORT}`);
+      });
+    })
+    .catch((err: Error) => {
+      console.error('Error al conectar a MongoDB:', err.message);
+      process.exit(1);
     });
-  })
-  .catch((err: Error) => {
-    console.error('Error al conectar a MongoDB:', err.message);
-    process.exit(1);
-  });
+}
