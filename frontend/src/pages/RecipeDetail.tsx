@@ -36,8 +36,8 @@ export default function RecipeDetail() {
     setLoadingRecipe(true);
     Promise.all([api.get<{ receta: IRecipe }>(`/api/recetas/${id}`), api.get<{ comentarios: IComment[] }>(`/api/recetas/${id}/comentarios`)])
       .then(([rRes, cRes]) => {
-        setRecipe(rRes.data.receta);
-        setComments(cRes.data.comentarios);
+        setRecipe(rRes.data.receta ?? null);
+        setComments(cRes.data.comentarios ?? []);
       })
       .catch(() => navigate('/'))
       .finally(() => setLoadingRecipe(false));
@@ -175,7 +175,7 @@ export default function RecipeDetail() {
             <div className="detail-card">
               <p className="detail-card__title">Ingredientes</p>
               <ul className="ingredient-list">
-                {recipe.ingredientes.map((ing, i) => (
+                {(recipe.ingredientes ?? []).map((ing, i) => (
                   <li key={i} className="ingredient-item">
                     <span className="ingredient-bullet" />
                     <span className="ingredient-name">{ing.nombre}</span>
@@ -188,11 +188,11 @@ export default function RecipeDetail() {
             </div>
 
             {/* Tags */}
-            {recipe.tags.length > 0 && (
+            {(recipe.tags ?? []).length > 0 && (
               <div className="detail-card">
                 <p className="detail-card__title">Etiquetas</p>
                 <div className="tag-list">
-                  {recipe.tags.map((tag) => (
+                  {(recipe.tags ?? []).map((tag) => (
                     <span key={tag} className="tag">
                       {tag}
                     </span>
@@ -214,7 +214,7 @@ export default function RecipeDetail() {
             <div className="detail-card" style={{ marginBottom: 32 }}>
               <p className="detail-card__title">Preparación</p>
               <ol className="steps-list">
-                {recipe.pasos.map((paso, i) => (
+                {(recipe.pasos ?? []).map((paso, i) => (
                   <li key={i} className="step-item">
                     <span className="step-number">{i + 1}</span>
                     <p className="step-text">{paso}</p>

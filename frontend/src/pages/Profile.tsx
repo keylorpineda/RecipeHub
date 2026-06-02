@@ -16,7 +16,7 @@ export default function Profile() {
     api
       .get<{ recetas: IRecipe[] }>('/api/recetas')
       .then(({ data }) => {
-        const mine = data.recetas.filter((r) => r.autorId._id === user?._id);
+        const mine = (data.recetas ?? []).filter((r) => r.autorId._id === user?._id);
         setRecipes(mine);
       })
       .catch(console.error)

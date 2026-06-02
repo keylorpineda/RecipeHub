@@ -22,7 +22,7 @@ export default function Home() {
 
     api
       .get<{ recetas: IRecipe[] }>('/api/recetas', { params })
-      .then(({ data }) => setRecipes(data.recetas))
+      .then(({ data }) => setRecipes(data.recetas ?? []))
       .catch(console.error)
       .finally(() => setLoading(false));
   }, [categoria, dificultad]);
