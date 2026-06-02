@@ -6,7 +6,7 @@
     "frontend"
   ],
   "scripts": {
-    "prepare": "is-ci || husky",
+    "prepare": "husky || true",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
