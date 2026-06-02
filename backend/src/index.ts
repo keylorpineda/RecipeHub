@@ -12,10 +12,12 @@ import authMiddleware, { AuthRequest } from './middleware/auth';
 
 const app = express();
 
-app.use(cors({
-  origin: process.env.FRONTEND_URL || 'https://app.recipehub.me',
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || 'https://app.recipehub.me',
+    credentials: true,
+  }),
+);
 app.use(express.json());
 app.use(cookieParser());
 

@@ -7,8 +7,7 @@ const router = Router({ mergeParams: true });
 // GET /api/recetas/:id/comentarios
 router.get('/', async (req: Request, res: Response) => {
   try {
-    const comentarios = await Comment.find({ recetaId: req.params.id })
-      .populate('usuarioId', 'nombre');
+    const comentarios = await Comment.find({ recetaId: req.params.id }).populate('usuarioId', 'nombre');
     return res.status(200).json({ comentarios });
   } catch (err) {
     return res.status(500).json({ error: (err as Error).message });

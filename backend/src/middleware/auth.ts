@@ -5,14 +5,9 @@ export interface AuthRequest extends Request {
   user?: { id: string };
 }
 
-export default function authMiddleware(
-  req: Request,
-  res: Response,
-  next: NextFunction,
-): Response | void {
+export default function authMiddleware(req: Request, res: Response, next: NextFunction): Response | void {
   // Cookie HttpOnly tiene prioridad; header Authorization como fallback para Postman/tests
-  const token: string | undefined =
-    req.cookies?.token ?? req.headers.authorization?.split(' ')[1];
+  const token: string | undefined = req.cookies?.token ?? req.headers.authorization?.split(' ')[1];
 
   if (!token) {
     return res.status(401).json({ error: 'Token requerido' });

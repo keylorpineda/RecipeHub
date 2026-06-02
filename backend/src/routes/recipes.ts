@@ -12,9 +12,7 @@ router.get('/', async (req: Request, res: Response) => {
     if (req.query.categoria) filter.categoria = req.query.categoria as string;
     if (req.query.dificultad) filter.dificultad = req.query.dificultad as string;
     if (req.query.tags) {
-      const tags = Array.isArray(req.query.tags)
-        ? (req.query.tags as string[])
-        : [req.query.tags as string];
+      const tags = Array.isArray(req.query.tags) ? (req.query.tags as string[]) : [req.query.tags as string];
       filter.tags = { $in: tags };
     }
 
@@ -27,13 +25,9 @@ router.get('/', async (req: Request, res: Response) => {
 
 // POST /api/recetas
 router.post('/', authMiddleware, async (req: Request, res: Response) => {
-  const {
-    titulo, descripcion, categoria, tiempoMin, porciones,
-    dificultad, ingredientes, pasos, tags, imagenUrl,
-  } = req.body as Record<string, unknown>;
+  const { titulo, descripcion, categoria, tiempoMin, porciones, dificultad, ingredientes, pasos, tags, imagenUrl } = req.body as Record<string, unknown>;
 
-  if (!titulo || !descripcion || !categoria || !tiempoMin || !porciones ||
-      !dificultad || !ingredientes || !pasos) {
+  if (!titulo || !descripcion || !categoria || !tiempoMin || !porciones || !dificultad || !ingredientes || !pasos) {
     return res.status(400).json({ error: 'Faltan campos requeridos' });
   }
 
@@ -85,10 +79,7 @@ router.put('/:id', authMiddleware, async (req: Request, res: Response) => {
       return res.status(403).json({ error: 'No autorizado' });
     }
 
-    const campos = [
-      'titulo', 'descripcion', 'categoria', 'tiempoMin', 'porciones',
-      'dificultad', 'ingredientes', 'pasos', 'tags', 'imagenUrl',
-    ] as const;
+    const campos = ['titulo', 'descripcion', 'categoria', 'tiempoMin', 'porciones', 'dificultad', 'ingredientes', 'pasos', 'tags', 'imagenUrl'] as const;
 
     for (const campo of campos) {
       if (req.body[campo] !== undefined) {

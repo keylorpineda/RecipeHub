@@ -5,8 +5,7 @@ import { Server } from 'http';
 import app from '../index';
 import User from '../models/User';
 
-const MONGO_URI_TEST =
-  process.env.MONGO_URI_TEST ?? 'mongodb://localhost:27017/recipehub_test';
+const MONGO_URI_TEST = process.env.MONGO_URI_TEST ?? 'mongodb://localhost:27017/recipehub_test';
 
 let server: Server;
 
@@ -96,9 +95,7 @@ describe('GET /api/auth/me', () => {
     const tokenCookie = setCookie.find((c) => c.startsWith('token='))!;
 
     // Usar la cookie en la ruta protegida
-    const meRes = await request(app)
-      .get('/api/auth/me')
-      .set('Cookie', tokenCookie);
+    const meRes = await request(app).get('/api/auth/me').set('Cookie', tokenCookie);
 
     expect(meRes.status).toBe(200);
     expect(meRes.body).toHaveProperty('user');
