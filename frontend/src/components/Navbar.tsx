@@ -14,7 +14,7 @@ export default function Navbar() {
     <nav className="navbar">
       <div className="navbar__inner">
         <Link to="/" className="navbar__logo">
-          RecipeHub
+          Recipe<span>Hub</span>
         </Link>
 
         <div className="navbar__links">
@@ -24,10 +24,10 @@ export default function Navbar() {
           {!loading && isAuthenticated && (
             <>
               <NavLink to="/nueva" className={({ isActive }) => `navbar__link${isActive ? ' navbar__link--active' : ''}`}>
-                Nueva Receta
+                Nueva receta
               </NavLink>
               <NavLink to="/perfil" className={({ isActive }) => `navbar__link${isActive ? ' navbar__link--active' : ''}`}>
-                Mi Perfil
+                Mi perfil
               </NavLink>
             </>
           )}
@@ -37,7 +37,7 @@ export default function Navbar() {
           {!loading &&
             (isAuthenticated ? (
               <button className="btn btn-ghost btn-sm" onClick={handleLogout}>
-                Salir
+                Cerrar sesión
               </button>
             ) : (
               <>
@@ -45,7 +45,7 @@ export default function Navbar() {
                   Iniciar sesión
                 </Link>
                 <Link to="/register" className="btn btn-primary btn-sm">
-                  Registro
+                  Registrarse
                 </Link>
               </>
             ))}

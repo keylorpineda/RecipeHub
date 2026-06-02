@@ -35,51 +35,73 @@ export default function Home() {
 
   return (
     <main>
-      {/* ── Hero ── */}
-      <section className="hero">
+      {/* ── Hero asimétrico ── */}
+      <section className="page-content" style={{ paddingBottom: 0 }}>
         <div className="container">
-          <span className="hero__eyebrow">✦ Cocina de autor</span>
-          <h1 className="hero__title">
-            Descubre recetas que
-            <br />
-            <em>te inspiran</em>
-          </h1>
-          <p className="hero__subtitle">Una colección editorial de recetas creadas con pasión. Del mercado a tu mesa.</p>
+          <div className="hero__inner">
+            <div className="hero__left">
+              <span className="hero__label">Cocina de autor</span>
+              <h1 className="hero__title">
+                Recetas que
+                <br />
+                <em>te inspiran</em>
+              </h1>
+              <p className="hero__subtitle">Publica tus platos, descubre los de otros y construye tu recetario personal.</p>
 
-          {/* Búsqueda */}
-          <div className="search-bar">
-            <span className="search-bar__icon">🔍</span>
-            <input className="form-input" type="search" placeholder="Buscar por nombre o etiqueta…" value={search} onChange={(e) => setSearch(e.target.value)} />
+              {/* Búsqueda */}
+              <div className="search-bar">
+                <span className="search-bar__icon">🔍</span>
+                <input className="form-input" type="search" placeholder="Buscar receta o etiqueta…" value={search} onChange={(e) => setSearch(e.target.value)} />
+              </div>
+
+              {/* Filtros */}
+              <div className="filters">
+                <select className="form-select" value={categoria} onChange={(e) => setCategoria(e.target.value)}>
+                  {CATEGORIAS.map((c) => (
+                    <option key={c} value={c}>
+                      {c === 'Todas' ? 'Categoría' : c}
+                    </option>
+                  ))}
+                </select>
+                <select className="form-select" value={dificultad} onChange={(e) => setDificultad(e.target.value)}>
+                  {DIFICULTADES.map((d) => (
+                    <option key={d} value={d}>
+                      {d === 'Todas' ? 'Dificultad' : d}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* Columna derecha — stats decorativas */}
+            <div className="hero__right">
+              <div className="hero__stat">
+                <span className="hero__stat-n">{loading ? '—' : recipes.length}</span>
+                <span className="hero__stat-label">recetas</span>
+              </div>
+              <div className="hero__stat">
+                <span className="hero__stat-n">{CATEGORIAS.length - 1}</span>
+                <span className="hero__stat-label">categorías</span>
+              </div>
+              <div className="hero__stat">
+                <span className="hero__stat-n">3</span>
+                <span className="hero__stat-label">niveles</span>
+              </div>
+            </div>
           </div>
-
-          {/* Filtros */}
-          <div className="filters">
-            <select className="form-select" value={categoria} onChange={(e) => setCategoria(e.target.value)}>
-              {CATEGORIAS.map((c) => (
-                <option key={c} value={c}>
-                  {c === 'Todas' ? 'Categoría' : c}
-                </option>
-              ))}
-            </select>
-            <select className="form-select" value={dificultad} onChange={(e) => setDificultad(e.target.value)}>
-              {DIFICULTADES.map((d) => (
-                <option key={d} value={d}>
-                  {d === 'Todas' ? 'Dificultad' : d}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="hero__divider">temporada</div>
         </div>
       </section>
 
-      {/* ── Grid ── */}
-      <section className="page-content" style={{ paddingTop: 0 }}>
+      {/* ── Grid de recetas ── */}
+      <section className="page-content" style={{ paddingTop: '40px' }}>
         <div className="container">
           <div className="section-header">
             <h2>Recetas</h2>
-            {!loading && <span className="results-count">{filtered.length} resultados</span>}
+            {!loading && (
+              <span className="results-count">
+                {filtered.length} resultado{filtered.length !== 1 ? 's' : ''}
+              </span>
+            )}
           </div>
 
           {loading ? (

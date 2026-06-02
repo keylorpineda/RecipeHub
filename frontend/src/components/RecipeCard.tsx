@@ -27,33 +27,27 @@ function avgRating(comentarios?: Pick<IComment, 'calificacion'>[]) {
 
 export default function RecipeCard({ _id, titulo, imagenUrl, tiempoMin, dificultad, categoria, comentarios, index = 0, wide = false }: RecipeCardProps) {
   const rating = avgRating(comentarios);
-  const delay = `${index * 60}ms`;
-
-  function addRipple(e: React.MouseEvent<HTMLAnchorElement>) {
-    const btn = e.currentTarget;
-    const ripple = document.createElement('span');
-    const rect = btn.getBoundingClientRect();
-    const size = Math.max(rect.width, rect.height);
-    ripple.className = 'ripple-effect';
-    ripple.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX - rect.left - size / 2}px;top:${e.clientY - rect.top - size / 2}px`;
-    btn.appendChild(ripple);
-    ripple.addEventListener('animationend', () => ripple.remove());
-  }
+  const delay = `${index * 55}ms`;
 
   return (
-    <Link to={`/recetas/${_id}`} className={`recipe-card${wide ? ' recipe-card--wide' : ''}`} style={{ animationDelay: delay }} onClick={addRipple}>
-      <div className="recipe-card__image-wrap">
+    <Link to={`/recetas/${_id}`} className={`recipe-card${wide ? ' recipe-card--wide' : ''}`} style={{ animationDelay: delay }}>
+      {/* Imagen — sin overlay de texto encima */}
+      <figure className="recipe-card__figure">
         {imagenUrl ? <img src={imagenUrl} alt={titulo} className="recipe-card__image" loading="lazy" /> : <div className="recipe-card__placeholder">🍽️</div>}
-        <div className="recipe-card__overlay" />
-      </div>
+        <span className={`recipe-card__badge ${difficultyClass[dificultad]}`}>{dificultad}</span>
+      </figure>
 
-      <div className="recipe-card__content">
-        <span className="recipe-card__category">{categoria}</span>
+      {/* Contenido — limpio, debajo de la imagen */}
+      <div className="recipe-card__body">
+        <div className="recipe-card__tags">
+          <span className="recipe-card__category">{categoria}</span>
+        </div>
+
         <h3 className="recipe-card__title">{titulo}</h3>
+
         <div className="recipe-card__footer">
           <div className="recipe-card__meta">
             <span className="recipe-card__meta-item">⏱ {tiempoMin} min</span>
-            <span className={`badge-difficulty ${difficultyClass[dificultad]}`}>{dificultad}</span>
           </div>
           {rating && (
             <div className="recipe-card__rating">
