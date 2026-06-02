@@ -12,17 +12,17 @@ let server: Server;
 beforeAll(async () => {
   await mongoose.connect(MONGO_URI_TEST);
   server = app.listen(0); // puerto aleatorio, evita conflictos
-});
+}, 30000);
 
 afterAll(async () => {
   await mongoose.connection.dropDatabase();
   await mongoose.connection.close();
   server.close();
-});
+}, 30000);
 
 afterEach(async () => {
   await User.deleteMany({});
-});
+}, 10000);
 
 // ─── TEST 1: Health endpoint ──────────────────────────────────────────────────
 
