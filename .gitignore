@@ -1,9 +1,27 @@
+# Dependencies
 node_modules
-dist
-.env
-*.log
-coverage
-frontend/node_modules
-frontend/dist
 backend/node_modules
+frontend/node_modules
+
+# Build outputs
+dist
 backend/dist
+frontend/dist
+
+# Environment variables — NUNCA subir al repo
+.env
+backend/.env
+frontend/.env
+frontend/.env.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode
+.idea

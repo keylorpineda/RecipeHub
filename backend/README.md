@@ -21,13 +21,13 @@ Copia `.env.example` a `.env` y ajusta los valores:
 cp .env.example .env
 ```
 
-| Variable | Descripción | Valor por defecto |
-|---|---|---|
-| `PORT` | Puerto donde escucha la API | `4000` |
-| `MONGO_URI` | URI de conexión a MongoDB | `mongodb://mongo_user:mongo_pass@mongo:27017/recipehub?authSource=admin` |
-| `JWT_SECRET` | Secreto para firmar los tokens JWT. Usa un valor largo y aleatorio en producción | `supersecretkey_cambiame_en_produccion` |
-| `MONGO_INITDB_ROOT_USERNAME` | Usuario root de MongoDB (usado por Docker Compose) | `mongo_user` |
-| `MONGO_INITDB_ROOT_PASSWORD` | Contraseña root de MongoDB (usado por Docker Compose) | `mongo_pass` |
+| Variable                     | Descripción                                                                      | Valor por defecto                                                        |
+| ---------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| `PORT`                       | Puerto donde escucha la API                                                      | `4000`                                                                   |
+| `MONGO_URI`                  | URI de conexión a MongoDB                                                        | `mongodb://mongo_user:mongo_pass@mongo:27017/recipehub?authSource=admin` |
+| `JWT_SECRET`                 | Secreto para firmar los tokens JWT. Usa un valor largo y aleatorio en producción | `supersecretkey_cambiame_en_produccion`                                  |
+| `MONGO_INITDB_ROOT_USERNAME` | Usuario root de MongoDB (usado por Docker Compose)                               | `mongo_user`                                                             |
+| `MONGO_INITDB_ROOT_PASSWORD` | Contraseña root de MongoDB (usado por Docker Compose)                            | `mongo_pass`                                                             |
 
 ## Desarrollo
 
@@ -68,20 +68,20 @@ Los tests usan una base de datos separada (`recipehub_test`). Puedes sobreescrib
 
 ## Endpoints principales
 
-| Método | Ruta | Auth | Descripción |
-|---|---|---|---|
-| `GET` | `/api/health` | No | Estado de la API |
-| `POST` | `/api/auth/register` | No | Registro de usuario |
-| `POST` | `/api/auth/login` | No | Login, retorna JWT |
-| `GET` | `/api/auth/me` | Sí | Perfil del usuario autenticado |
-| `GET` | `/api/recetas` | No | Listar recetas (filtros: `categoria`, `dificultad`, `tags`) |
-| `POST` | `/api/recetas` | Sí | Crear receta |
-| `GET` | `/api/recetas/:id` | No | Obtener receta por ID |
-| `PUT` | `/api/recetas/:id` | Sí | Editar receta (solo el autor) |
-| `DELETE` | `/api/recetas/:id` | Sí | Eliminar receta (solo el autor) |
-| `GET` | `/api/recetas/:id/comentarios` | No | Listar comentarios de una receta |
-| `POST` | `/api/recetas/:id/comentarios` | Sí | Agregar comentario |
-| `DELETE` | `/api/comentarios/:id` | Sí | Eliminar comentario (solo el autor) |
+| Método   | Ruta                           | Auth | Descripción                                                 |
+| -------- | ------------------------------ | ---- | ----------------------------------------------------------- |
+| `GET`    | `/api/health`                  | No   | Estado de la API                                            |
+| `POST`   | `/api/auth/register`           | No   | Registro de usuario                                         |
+| `POST`   | `/api/auth/login`              | No   | Login, retorna JWT                                          |
+| `GET`    | `/api/auth/me`                 | Sí   | Perfil del usuario autenticado                              |
+| `GET`    | `/api/recetas`                 | No   | Listar recetas (filtros: `categoria`, `dificultad`, `tags`) |
+| `POST`   | `/api/recetas`                 | Sí   | Crear receta                                                |
+| `GET`    | `/api/recetas/:id`             | No   | Obtener receta por ID                                       |
+| `PUT`    | `/api/recetas/:id`             | Sí   | Editar receta (solo el autor)                               |
+| `DELETE` | `/api/recetas/:id`             | Sí   | Eliminar receta (solo el autor)                             |
+| `GET`    | `/api/recetas/:id/comentarios` | No   | Listar comentarios de una receta                            |
+| `POST`   | `/api/recetas/:id/comentarios` | Sí   | Agregar comentario                                          |
+| `DELETE` | `/api/comentarios/:id`         | Sí   | Eliminar comentario (solo el autor)                         |
 
 Las rutas protegidas requieren el header:
 

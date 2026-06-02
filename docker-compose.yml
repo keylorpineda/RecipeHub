@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:7
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    volumes:
+      - recipehub_data:/data/db
+    networks:
+      - recipehub_net
+    # SIN ports — MongoDB no se expone al host, solo accesible dentro de la red Docker
+
+  api:
+    build: ./backend
+    restart: always
+    ports:
+      - '4000:4000'
+    environment:
+      - PORT=4000
+      - MONGO_URI=${MONGO_URI}
+      - JWT_SECRET=${JWT_SECRET}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - NODE_ENV=production
+    depends_on:
+      - mongo
+    networks:
+      - recipehub_net
+
+networks:
+  recipehub_net:
+    driver: bridge
+
+volumes:
+  recipehub_data:
