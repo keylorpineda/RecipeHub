@@ -468,21 +468,42 @@ p {
 .form-select {
   appearance: none;
   cursor: pointer;
+  color-scheme: dark;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23B5A080' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 14px center;
   padding-right: 36px;
 }
 .form-select option {
-  background: var(--color-surface);
-  color: var(--color-text);
+  background: #1e1b16;
+  color: #f0e6d0;
+  font-family: var(--font-body);
+  padding: 8px 12px;
+}
+.form-select option:checked {
+  background: #302a20;
+  color: #c9a84c;
+}
+.form-select option:hover {
+  background: #302a20;
 }
 .form-error {
   font-size: var(--text-xs);
-  color: var(--color-error);
+  color: #f0a0a0;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
+  font-family: var(--font-body);
+  padding: 6px 10px;
+  background: rgba(168, 64, 64, 0.08);
+  border: 1px solid rgba(168, 64, 64, 0.2);
+  border-left: 3px solid var(--color-error);
+  border-radius: var(--radius-sm);
+}
+.form-error::before {
+  content: '⚠';
+  flex-shrink: 0;
+  font-size: 0.8rem;
 }
 .form-hint {
   font-size: var(--text-xs);
@@ -1412,20 +1433,44 @@ p {
   text-decoration: underline;
 }
 .alert {
-  padding: 12px 16px;
+  padding: 14px 16px 14px 48px;
   border-radius: var(--radius-md);
   font-size: var(--text-sm);
-  font-weight: 500;
+  font-weight: 400;
+  font-family: var(--font-body);
+  line-height: 1.55;
+  position: relative;
+  border: 1px solid transparent;
+  border-left-width: 4px;
+}
+.alert::before {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  line-height: 1;
 }
 .alert--error {
-  background: rgba(168, 64, 64, 0.1);
-  color: #f0a0a0;
-  border: 1px solid rgba(168, 64, 64, 0.3);
+  background: rgba(168, 64, 64, 0.08);
+  color: #f0b0b0;
+  border-color: rgba(168, 64, 64, 0.25);
+  border-left-color: var(--color-error);
+}
+.alert--error::before {
+  content: '⚠';
+  color: var(--color-error);
 }
 .alert--success {
-  background: rgba(78, 122, 64, 0.1);
-  color: #a0d090;
-  border: 1px solid rgba(78, 122, 64, 0.3);
+  background: rgba(78, 122, 64, 0.08);
+  color: #b0d8a0;
+  border-color: rgba(78, 122, 64, 0.25);
+  border-left-color: var(--color-success);
+}
+.alert--success::before {
+  content: '✓';
+  color: var(--color-success);
+  font-weight: 700;
 }
 
 /* ─── Perfil ────────────────────────────────────────────────────────────────── */
