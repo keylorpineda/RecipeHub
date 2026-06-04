@@ -50,7 +50,12 @@ export default function Home() {
 
               {/* Búsqueda */}
               <div className="search-bar">
-                <span className="search-bar__icon">🔍</span>
+                <span className="search-bar__icon">
+                  <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="6.5" cy="6.5" r="5" stroke="currentColor" strokeWidth="1.5" />
+                    <line x1="10.5" y1="10.5" x2="14" y2="14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
+                </span>
                 <input className="form-input" type="search" placeholder="Buscar receta o etiqueta…" value={search} onChange={(e) => setSearch(e.target.value)} />
               </div>
 
