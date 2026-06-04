@@ -22,6 +22,8 @@ export default function CreateRecipe() {
   const [porciones, setPorciones] = useState('');
   const [dificultad, setDificultad] = useState<'Fácil' | 'Media' | 'Difícil' | ''>('');
   const [imagenUrl, setImagenUrl] = useState('');
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [imageError, setImageError] = useState('');
   const [tags, setTags] = useState('');
   const [ingredientes, setIngredientes] = useState<IngredienteRow[]>([emptyIng(1)]);
   const [pasos, setPasos] = useState<{ id: number; texto: string }[]>([{ id: 1, texto: '' }]);
@@ -36,6 +38,31 @@ export default function CreateRecipe() {
   }
   function updateIngrediente(id: number, field: keyof IIngrediente, value: string | number) {
     setIngredientes((p) => p.map((i) => (i.id === id ? { ...i, [field]: value } : i)));
+  }
+
+  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setImageError('');
+    setIsUploadingImage(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('image', file);
+
+      // Enviamos el archivo a nuestro backend
+      const { data } = await api.post<{ secure_url: string }>('/api/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+
+      setImagenUrl(data.secure_url);
+    } catch (err: any) {
+      const msg = err?.response?.data?.error || err.message || 'Error al subir la imagen';
+      setImageError(msg);
+    } finally {
+      setIsUploadingImage(false);
+    }
   }
 
   function addPaso() {
@@ -146,8 +173,29 @@ export default function CreateRecipe() {
                 </select>
               </div>
               <div className="form-group">
-                <label className="form-label">URL de imagen</label>
-                <input className="form-input" type="url" value={imagenUrl} onChange={(e) => setImagenUrl(e.target.value)} placeholder="https://…" />
+                <label className="form-label">Imagen de la receta</label>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <input 
+                    type="file" 
+                    accept="image/*" 
+                    onChange={handleImageUpload} 
+                    disabled={isUploadingImage}
+                    className="form-input"
+                  />
+                  {isUploadingImage && <span className="form-hint">Subiendo imagen de forma segura...</span>}
+                  {imageError && <span className="form-hint" style={{ color: '#d32f2f' }}>{imageError}</span>}
+                  
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
+                    <span className="form-hint">O pega un enlace:</span>
+                    <input className="form-input" style={{ flex: 1 }} type="url" value={imagenUrl} onChange={(e) => setImagenUrl(e.target.value)} placeholder="https://…" />
+                  </div>
+                </div>
+                {imagenUrl && (
+                  <div style={{ marginTop: '12px' }}>
+                    <p className="form-hint" style={{ marginBottom: '4px' }}>Vista previa:</p>
+                    <img src={imagenUrl} alt="Vista previa" style={{ maxWidth: '100%', maxHeight: '200px', borderRadius: '8px', objectFit: 'cover' }} />
+                  </div>
+                )}
               </div>
               <div className="form-group">
                 <label className="form-label">Etiquetas</label>
@@ -224,8 +272,8 @@ export default function CreateRecipe() {
             <button type="button" className="btn btn-ghost" onClick={() => navigate(-1)}>
               Cancelar
             </button>
-            <button type="submit" className={`btn btn-primary btn-lg${loading ? ' btn--loading' : ''}`} disabled={loading}>
-              {loading ? <span className="btn__spinner" /> : 'Publicar receta'}
+            <button type="submit" className={`btn btn-primary btn-lg${loading ? ' btn--loading' : ''}`} disabled={loading || isUploadingImage}>
+              {loading || isUploadingImage ? <span className="btn__spinner" /> : 'Publicar receta'}
             </button>
           </div>
         </form>

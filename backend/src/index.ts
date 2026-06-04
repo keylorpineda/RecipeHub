@@ -14,6 +14,7 @@ import mongoose from 'mongoose';
 import authRouter from './routes/auth';
 import recipesRouter from './routes/recipes';
 import commentsRouter from './routes/comments';
+import uploadRouter from './routes/upload';
 import Comment from './models/Comment';
 import authMiddleware, { AuthRequest } from './middleware/auth';
 
@@ -31,6 +32,7 @@ app.use(cookieParser());
 app.use('/api/auth', authRouter);
 app.use('/api/recetas', recipesRouter);
 app.use('/api/recetas/:id/comentarios', commentsRouter);
+app.use('/api/upload', uploadRouter);
 
 // DELETE /api/comentarios/:id
 app.delete('/api/comentarios/:id', authMiddleware, async (req: Request, res: Response) => {
