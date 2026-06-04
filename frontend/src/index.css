@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Lato:wght@300;400;700&family=Courier+Prime:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Lato:wght@300;400;700&family=Courier+Prime:wght@400;700&display=swap');
 
 /* ─── Paleta — Cocina de autor nocturna ─────────────────────────────────────── */
 :root {
@@ -21,7 +21,8 @@
   --color-error: #a84040;
   --color-overlay: rgba(15, 14, 12, 0.9);
 
-  --font-display: 'Playfair Display', Georgia, serif;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-logo: 'Cinzel', Georgia, serif;
   --font-body: 'Lato', system-ui, sans-serif;
   --font-mono: 'Courier Prime', 'Courier New', monospace;
 
@@ -255,12 +256,13 @@ p {
   padding: 0 24px;
 }
 .navbar__logo {
-  font-family: var(--font-display);
-  font-size: 1.6rem;
-  font-weight: 700;
-  font-style: italic;
+  font-family: var(--font-logo);
+  font-size: 1.35rem;
+  font-weight: 600;
+  font-style: normal;
   color: var(--color-primary);
-  letter-spacing: 0.01em;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   transition: color var(--transition);
 }
 .navbar__logo span {
@@ -1346,11 +1348,13 @@ p {
   border: 30px solid rgba(201, 168, 76, 0.06);
 }
 .auth-page__art-logo {
-  font-family: var(--font-display);
-  font-size: 2.2rem;
-  font-weight: 700;
-  font-style: italic;
+  font-family: var(--font-logo);
+  font-size: 2rem;
+  font-weight: 600;
+  font-style: normal;
   color: var(--color-primary);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   position: relative;
   z-index: 1;
 }
