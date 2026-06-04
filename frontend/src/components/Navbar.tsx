@@ -36,7 +36,7 @@ export default function Navbar() {
         <div className="navbar__actions">
           {!loading &&
             (isAuthenticated ? (
-              <button className="btn btn-ghost btn-sm" onClick={handleLogout}>
+              <button className="btn btn-logout btn-sm" onClick={handleLogout}>
                 Cerrar sesión
               </button>
             ) : (

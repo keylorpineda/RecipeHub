@@ -52,7 +52,7 @@ export default function Profile() {
             <Link to="/nueva" className="btn btn-primary btn-sm">
               + Nueva receta
             </Link>
-            <button className="btn btn-ghost btn-sm" onClick={handleLogout}>
+            <button className="btn btn-logout btn-sm" onClick={handleLogout}>
               Cerrar sesión
             </button>
           </div>

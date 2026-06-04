@@ -34,6 +34,7 @@ export default function RecipeCard({ _id, titulo, imagenUrl, tiempoMin, dificult
       {/* Imagen — sin overlay de texto encima */}
       <figure className="recipe-card__figure">
         {imagenUrl ? <img src={imagenUrl} alt={titulo} className="recipe-card__image" loading="lazy" /> : <div className="recipe-card__placeholder">🍽️</div>}
+        <div className="recipe-card__img-overlay" />
         <span className={`recipe-card__badge ${difficultyClass[dificultad]}`}>{dificultad}</span>
       </figure>
 
