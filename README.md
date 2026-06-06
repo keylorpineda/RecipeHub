@@ -13,7 +13,9 @@
   </p>
 </div>
 
----
+<br/>
+<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/solar.png" width="100%" />
+<br/>
 
 ## 🛠️ Stack Tecnológico
 
@@ -30,40 +32,42 @@
 **IP:** 159.223.149.208  
 **OS:** Ubuntu 24.04 LTS — 2 GB RAM · 1 vCPU · 50 GB SSD
 
-### Software instalado
+### 📦 Software Instalado
 
-| Software       | Versión     | Propósito                                |
-| -------------- | ----------- | ---------------------------------------- |
-| Docker Engine  | 29.5.2      | Contenerización de servicios             |
-| Docker Compose | v2 (plugin) | Orquestación de contenedores             |
-| Nginx          | 1.24        | Reverse proxy + servir frontend estático |
-| Certbot        | Latest      | Gestión automática de certificados SSL   |
-| Node.js        | 20.x        | Build del frontend en el VPS             |
-| Git            | Sistema     | Clonar y actualizar el repositorio       |
+> Base de operaciones configurada en el servidor para el correcto funcionamiento.
 
-### Puertos abiertos en firewall
+| 🧰 Software        |     🏷️ Versión     | 🎯 Propósito                             |
+| :----------------- | :----------------: | :--------------------------------------- |
+| **Docker Engine**  | <kbd>29.5.2</kbd>  | Contenerización de servicios             |
+| **Docker Compose** |   <kbd>v2</kbd>    | Orquestación de contenedores             |
+| **Nginx**          |  <kbd>1.24</kbd>   | Reverse proxy + servir frontend estático |
+| **Certbot**        | <kbd>Latest</kbd>  | Gestión automática de certificados SSL   |
+| **Node.js**        |  <kbd>20.x</kbd>   | Build del frontend en el VPS             |
+| **Git**            | <kbd>Sistema</kbd> | Clonar y actualizar el repositorio       |
 
-| Puerto | Protocolo | Uso                              |
-| ------ | --------- | -------------------------------- |
-| 22     | TCP       | SSH — acceso al servidor         |
-| 80     | TCP       | HTTP — redirige a HTTPS (301)    |
-| 443    | TCP       | HTTPS — tráfico de la aplicación |
+### 🛡️ Puertos Abiertos (Firewall)
 
-### Contenedores Docker en producción
+|   🔌 Puerto    | ⚙️ Protocolo | 📝 Uso                                  |
+| :------------: | :----------: | :-------------------------------------- |
+| <kbd>22</kbd>  |    `TCP`     | 🔐 **SSH** — acceso al servidor         |
+| <kbd>80</kbd>  |    `TCP`     | 🌐 **HTTP** — redirige a HTTPS (301)    |
+| <kbd>443</kbd> |    `TCP`     | 🔒 **HTTPS** — tráfico de la aplicación |
 
-| Contenedor          | Imagen                        | Puerto         | Descripción           |
-| ------------------- | ----------------------------- | -------------- | --------------------- |
-| `recipehub-api-1`   | Node 20 Alpine (build propio) | 4000 (interno) | API REST Express      |
-| `recipehub-mongo-1` | mongo:7                       | Sin exponer    | Base de datos MongoDB |
+### 🐳 Contenedores Docker en Producción
 
-### Dominio y DNS
+| 📦 Contenedor       | 🖼️ Imagen           |         🚪 Puerto         | 📋 Descripción        |
+| :------------------ | :------------------ | :-----------------------: | :-------------------- |
+| `recipehub-api-1`   | 🟩 _Node 20 Alpine_ | <kbd>4000</kbd> (interno) | API REST Express      |
+| `recipehub-mongo-1` | 🍃 _mongo:7_        |      🚫 Sin exponer       | Base de datos MongoDB |
 
-| Subdominio         | Tipo     | Apunta a        |
-| ------------------ | -------- | --------------- |
-| `app.recipehub.me` | A Record | 159.223.149.208 |
-| `api.recipehub.me` | A Record | 159.223.149.208 |
+### 🌍 Dominio y DNS
 
-Registrador: Namecheap (dominio `.me` gratis via GitHub Student Pack)
+| 🔗 Subdominio      |   🧩 Tipo    |        🎯 Apunta a         |
+| :----------------- | :----------: | :------------------------: |
+| `app.recipehub.me` | **A Record** | <kbd>159.223.149.208</kbd> |
+| `api.recipehub.me` | **A Record** | <kbd>159.223.149.208</kbd> |
+
+> **Registrador:** Namecheap _(dominio `.me` gratis via GitHub Student Pack)_
 
 ## 🌐 URLs de Producción
 
@@ -96,26 +100,26 @@ nano .env   # editar contraseñas y JWT_SECRET
 echo "VITE_API_URL=http://localhost:4000" > frontend/.env
 ```
 
-### Variables del `.env` raíz
+### ⚙️ Variables del `.env` raíz
 
-| Variable                     | Descripción                                            | Ejemplo                                                      |
-| ---------------------------- | ------------------------------------------------------ | ------------------------------------------------------------ |
-| `PORT`                       | Puerto del servidor API                                | `4000`                                                       |
-| `MONGO_INITDB_ROOT_USERNAME` | Usuario root de MongoDB                                | `mongo_user`                                                 |
-| `MONGO_INITDB_ROOT_PASSWORD` | Contraseña root de MongoDB                             | `password_seguro`                                            |
-| `MONGO_URI`                  | URI de conexión MongoDB                                | `mongodb://user:pass@mongo:27017/recipehub?authSource=admin` |
-| `JWT_SECRET`                 | Secreto para firmar JWT, debe ser largo y aleatorio    | `s3cr3t0_muy_l4rg0`                                          |
-| `FRONTEND_URL`               | URL del frontend para configurar CORS                  | `https://app.recipehub.me`                                   |
-| `NODE_ENV`                   | Entorno de ejecución                                   | `production`                                                 |
-| `CLOUDINARY_CLOUD_NAME`      | Nombre del cloud de Cloudinary para subida de imágenes | `dxsrmgezg`                                                  |
-| `CLOUDINARY_API_KEY`         | API Key de Cloudinary                                  | `396491736294185`                                            |
-| `CLOUDINARY_API_SECRET`      | API Secret de Cloudinary                               | `tu_api_secret`                                              |
+| 🔑 Variable                           | 📖 Descripción                 | 💡 Ejemplo                                  |
+| :------------------------------------ | :----------------------------- | :------------------------------------------ |
+| <kbd>PORT</kbd>                       | Puerto del servidor API        | `4000`                                      |
+| <kbd>MONGO_INITDB_ROOT_USERNAME</kbd> | Usuario root de MongoDB        | `mongo_user`                                |
+| <kbd>MONGO_INITDB_ROOT_PASSWORD</kbd> | Contraseña root de MongoDB     | `password_seguro`                           |
+| <kbd>MONGO_URI</kbd>                  | URI de conexión MongoDB        | `mongodb://user:pass@mongo:27017/recipehub` |
+| <kbd>JWT_SECRET</kbd>                 | Secreto para firmar JWT        | `s3cr3t0_muy_l4rg0`                         |
+| <kbd>FRONTEND_URL</kbd>               | URL del frontend para CORS     | `https://app.recipehub.me`                  |
+| <kbd>NODE_ENV</kbd>                   | Entorno de ejecución           | `production`                                |
+| <kbd>CLOUDINARY_CLOUD_NAME</kbd>      | Nombre del cloud de Cloudinary | `dxsrmgezg`                                 |
+| <kbd>CLOUDINARY_API_KEY</kbd>         | API Key de Cloudinary          | `396491736294185`                           |
+| <kbd>CLOUDINARY_API_SECRET</kbd>      | API Secret de Cloudinary       | `tu_api_secret`                             |
 
-### Variable del `frontend/.env`
+### 🎨 Variable del `frontend/.env`
 
-| Variable       | Descripción        | Dev                     | Producción                 |
-| -------------- | ------------------ | ----------------------- | -------------------------- |
-| `VITE_API_URL` | URL base de la API | `http://localhost:4000` | `https://api.recipehub.me` |
+| 🔑 Variable             | 📖 Descripción     | 🛠️ Dev                  | 🚀 Producción              |
+| :---------------------- | :----------------- | :---------------------- | :------------------------- |
+| <kbd>VITE_API_URL</kbd> | URL base de la API | `http://localhost:4000` | `https://api.recipehub.me` |
 
 ## 🚀 Guía de Despliegue desde Cero
 
@@ -196,18 +200,18 @@ curl https://api.recipehub.me/api/health
 # Respuesta esperada: {"status":"ok","timestamp":"..."}
 ```
 
-### 10. Configurar GitHub Actions
+### 🤖 10. Configurar GitHub Actions
 
 En **GitHub → Settings → Secrets and variables → Actions → New repository secret**, agregar exactamente estos 6 secrets:
 
-| Secret                | Descripción                          | Cómo obtenerlo                                                            |
-| --------------------- | ------------------------------------ | ------------------------------------------------------------------------- |
-| `VPS_HOST`            | IP pública del VPS                   | Panel de control del proveedor (DigitalOcean, Hetzner, etc.)              |
-| `VPS_USER`            | Usuario SSH del VPS                  | Normalmente `root` en un VPS nuevo                                        |
-| `VPS_SSH_KEY`         | Llave privada SSH completa           | Contenido de `~/.ssh/id_ed25519` (o `id_rsa`) en tu máquina local         |
-| `MONGO_URI`           | URI de conexión a MongoDB            | `mongodb://mongo_user:TU_PASSWORD@mongo:27017/recipehub?authSource=admin` |
-| `JWT_SECRET`          | Secreto para firmar tokens JWT       | Generar con: `openssl rand -base64 48`                                    |
-| `MONGO_ROOT_PASSWORD` | Contraseña root de MongoDB en el VPS | Elige una contraseña segura; debe coincidir con la usada en `MONGO_URI`   |
+| 🔐 Secret                      | 📖 Descripción                 | 🔍 Cómo obtenerlo                      |
+| :----------------------------- | :----------------------------- | :------------------------------------- |
+| <kbd>VPS_HOST</kbd>            | IP pública del VPS             | Panel de control del proveedor         |
+| <kbd>VPS_USER</kbd>            | Usuario SSH del VPS            | Normalmente `root` en un VPS nuevo     |
+| <kbd>VPS_SSH_KEY</kbd>         | Llave privada SSH completa     | Contenido de `~/.ssh/id_ed25519` local |
+| <kbd>MONGO_URI</kbd>           | URI de conexión a MongoDB      | `mongodb://mongo_user:pass@mongo`      |
+| <kbd>JWT_SECRET</kbd>          | Secreto para firmar tokens JWT | Generar con: `openssl rand -base64 48` |
+| <kbd>MONGO_ROOT_PASSWORD</kbd> | Contraseña root de MongoDB     | Contraseña elegida                     |
 
 A partir de aquí cada `push` a `main` dispara el pipeline automáticamente: tests → deploy → health check.
 
@@ -253,11 +257,15 @@ recipehub/
 
 ## 👥 Integrantes del Grupo
 
-- Jefferson David Abarca Pérez
-- David Esteban Acuña Orozco
-- Brenda Valeska Aguilar Fonseca
-- Keylor Steven Pineda Álvarez
-- Jordy Estrada Ortega
+<table align="center">
+  <tr>
+    <td align="center"><img src="https://ui-avatars.com/api/?name=Jefferson+Abarca&background=0D8ABC&color=fff&rounded=true&bold=true" width="80px;" alt="Jefferson"/><br /><b>Jefferson Abarca</b></td>
+    <td align="center"><img src="https://ui-avatars.com/api/?name=David+Acuna&background=4CAF50&color=fff&rounded=true&bold=true" width="80px;" alt="David"/><br /><b>David Acuña</b></td>
+    <td align="center"><img src="https://ui-avatars.com/api/?name=Brenda+Aguilar&background=E91E63&color=fff&rounded=true&bold=true" width="80px;" alt="Brenda"/><br /><b>Brenda Aguilar</b></td>
+    <td align="center"><img src="https://ui-avatars.com/api/?name=Keylor+Pineda&background=FF9800&color=fff&rounded=true&bold=true" width="80px;" alt="Keylor"/><br /><b>Keylor Pineda</b></td>
+    <td align="center"><img src="https://ui-avatars.com/api/?name=Jordy+Estrada&background=9C27B0&color=fff&rounded=true&bold=true" width="80px;" alt="Jordy"/><br /><b>Jordy Estrada</b></td>
+  </tr>
+</table>
 
 ## 🔒 Seguridad
 
@@ -281,4 +289,8 @@ Se ejecutan automáticamente en cada push via GitHub Actions con servicio MongoD
 
 ## 📄 Licencia
 
-Proyecto académico — Universidad Nacional, I Semestre 2026
+<p align="center">
+  <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/solar.png" width="100%" />
+</p>
+
+Proyecto académico — **Universidad Nacional, Sede Regional Brunca**, I Semestre 2026
