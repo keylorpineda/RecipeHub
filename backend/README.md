@@ -83,7 +83,9 @@ Los tests usan una base de datos separada (`recipehub_test`). Puedes sobreescrib
 | `POST`   | `/api/recetas/:id/comentarios` | Sí   | Agregar comentario                                          |
 | `DELETE` | `/api/comentarios/:id`         | Sí   | Eliminar comentario (solo el autor)                         |
 
-Las rutas protegidas requieren el header:
+Las rutas protegidas leen el JWT desde la **cookie HttpOnly `token`** que el backend establece automáticamente al hacer login o registro. No es necesario enviar ningún header manual desde el navegador.
+
+Para probar desde Postman o en los tests de integración, el middleware también acepta el header como fallback:
 
 ```
 Authorization: Bearer <token>
