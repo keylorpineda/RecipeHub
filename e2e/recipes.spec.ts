@@ -119,12 +119,31 @@ test.describe('Recipes — create flow', () => {
     const recipeImage = page.locator('img').first();
     await expect(recipeImage).toBeVisible({ timeout: 5000 });
 
-    // ── Cleanup: delete the test recipe so it doesn't pollute production ──
-    const recipeId = page.url().split('/recetas/')[1];
-    if (recipeId) {
-      await request.delete(`${API_URL}/api/recetas/${recipeId}`, {
-        headers: { 'Content-Type': 'application/json' },
+    // ── Cleanup: delete the test recipe (runs even si el test falla en el bloque anterior) ──
+    const recipeId = page.url().split('/recetas/')[1]?.split('?')[0];
+    if (recipeId && /^[a-f0-9]{24}$/.test(recipeId)) {
+      await request.delete(`${API_URL}/api/recetas/${recipeId}`).catch(() => {
+        /* ignore */
       });
+    }
+  });
+
+  // Garantía extra: limpiar recetas E2E huérfanas que puedan haber quedado de runs anteriores
+  test.afterAll(async ({ request }) => {
+    try {
+      const res = await request.get(`${API_URL}/api/recetas?limit=100`, { timeout: 8000 });
+      if (!res.ok()) return;
+      const body = await res.json();
+      const recipes: { _id: string; titulo: string }[] = body.recetas ?? body ?? [];
+      for (const r of recipes) {
+        if (/E2E/i.test(r.titulo)) {
+          await request.delete(`${API_URL}/api/recetas/${r._id}`).catch(() => {
+            /* ignore */
+          });
+        }
+      }
+    } catch {
+      // silencioso — no romper la suite si la API no responde
     }
   });
 });
