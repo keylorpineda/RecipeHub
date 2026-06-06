@@ -112,6 +112,14 @@ test.describe('Recipes — create flow', () => {
     // Verify the recipe detail shows the image
     const recipeImage = page.locator('img').first();
     await expect(recipeImage).toBeVisible({ timeout: 5000 });
+
+    // ── Cleanup: delete the test recipe so it doesn't pollute production ──
+    const recipeId = page.url().split('/recetas/')[1];
+    if (recipeId) {
+      await request.delete(`${API_URL}/api/recetas/${recipeId}`, {
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
   });
 });
 
