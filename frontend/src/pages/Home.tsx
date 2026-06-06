@@ -71,9 +71,13 @@ export default function Home() {
     return r.titulo.toLowerCase().includes(q) || r.tags.some((t) => t.toLowerCase().includes(q));
   });
 
-  const featured = filtered[0] ?? null;
-  const secondary = filtered[1] ?? null;
-  const rest = filtered.slice(2);
+  const sorted = [...filtered].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+
+  const featured  = sorted[0] ?? null;
+  const secondary = sorted[1] ?? null;
+  const rest      = sorted.slice(2);
 
   return (
     <>

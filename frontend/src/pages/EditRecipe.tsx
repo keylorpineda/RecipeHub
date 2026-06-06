@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from 'react';
+import { useEffect, useState, useRef, type FormEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../api/axios';
 import type { IRecipe, IIngrediente } from '../types';
@@ -8,6 +8,7 @@ interface IngredienteRow extends IIngrediente {
 }
 
 const DIFICULTADES = ['Fácil', 'Media', 'Difícil'] as const;
+const CATEGORIAS = ['Italiana', 'Mexicana', 'Asiática', 'Mediterránea', 'Española', 'Francesa', 'Postres', 'Vegana', 'Otra'] as const;
 
 export default function EditRecipe() {
   const { id } = useParams<{ id: string }>();
@@ -27,6 +28,21 @@ export default function EditRecipe() {
   const [ingredientes, setIngredientes] = useState<IngredienteRow[]>([]);
   const [pasos, setPasos] = useState<{ id: number; texto: string }[]>([]);
   const [nextId, setNextId] = useState(100);
+
+  const tituloRef      = useRef<HTMLInputElement>(null);
+  const descripcionRef = useRef<HTMLTextAreaElement>(null);
+  const categoriaRef   = useRef<HTMLSelectElement>(null);
+  const tiempoRef      = useRef<HTMLInputElement>(null);
+  const porcionesRef   = useRef<HTMLInputElement>(null);
+  const dificultadRef  = useRef<HTMLSelectElement>(null);
+
+  function scrollToField(ref: React.RefObject<HTMLElement | null>, msg: string) {
+    setError(msg);
+    setTimeout(() => {
+      ref.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      ref.current?.focus();
+    }, 50);
+  }
 
   useEffect(() => {
     if (!id) return;
@@ -74,8 +90,28 @@ export default function EditRecipe() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError('');
-    if (!titulo || !descripcion || !categoria || !tiempoMin || !porciones || !dificultad) {
-      setError('Completa todos los campos requeridos.');
+    if (!titulo.trim()) {
+      scrollToField(tituloRef, 'El título de la receta es obligatorio.');
+      return;
+    }
+    if (!descripcion.trim()) {
+      scrollToField(descripcionRef, 'La descripción es obligatoria.');
+      return;
+    }
+    if (!categoria) {
+      scrollToField(categoriaRef, 'Selecciona una categoría.');
+      return;
+    }
+    if (!tiempoMin || Number(tiempoMin) <= 0) {
+      scrollToField(tiempoRef, 'El tiempo de preparación es obligatorio.');
+      return;
+    }
+    if (!porciones || Number(porciones) <= 0) {
+      scrollToField(porcionesRef, 'El número de porciones es obligatorio.');
+      return;
+    }
+    if (!dificultad) {
+      scrollToField(dificultadRef, 'Selecciona la dificultad de la receta.');
       return;
     }
     setSaving(true);
@@ -127,41 +163,44 @@ export default function EditRecipe() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} noValidate>
           <div className="recipe-form">
             {/* Columna izquierda */}
             <div className="recipe-form__section">
               <p className="recipe-form__section-title">Información general</p>
               <div className="form-group">
-                <label className="form-label">Título *</label>
-                <input className="form-input" value={titulo} onChange={(e) => setTitulo(e.target.value)} required />
+                <label className="form-label" htmlFor="edit-titulo">Título *</label>
+                <input id="edit-titulo" ref={tituloRef} className="form-input" value={titulo} onChange={(e) => setTitulo(e.target.value)} />
               </div>
               <div className="form-group">
-                <label className="form-label">Descripción *</label>
-                <textarea className="form-textarea" value={descripcion} onChange={(e) => setDescripcion(e.target.value)} rows={3} required />
+                <label className="form-label" htmlFor="edit-descripcion">Descripción *</label>
+                <textarea id="edit-descripcion" ref={descripcionRef} className="form-textarea" value={descripcion} onChange={(e) => setDescripcion(e.target.value)} rows={3} />
               </div>
               <div className="form-group">
-                <label className="form-label">Categoría *</label>
-                <input className="form-input" value={categoria} onChange={(e) => setCategoria(e.target.value)} required />
+                <label className="form-label" htmlFor="edit-categoria">Categoría *</label>
+                <select id="edit-categoria" ref={categoriaRef} className="form-select" value={categoria} onChange={(e) => setCategoria(e.target.value)}>
+                  <option value="">Selecciona una categoría…</option>
+                  {CATEGORIAS.map((c) => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </select>
               </div>
               <div className="time-portions-grid">
                 <div className="form-group">
-                  <label className="form-label">Tiempo (min) *</label>
-                  <input className="form-input" type="number" min={1} value={tiempoMin} onChange={(e) => setTiempoMin(e.target.value)} required />
+                  <label className="form-label" htmlFor="edit-tiempo">Tiempo (min) *</label>
+                  <input id="edit-tiempo" ref={tiempoRef} className="form-input" type="number" min={1} value={tiempoMin} onChange={(e) => setTiempoMin(e.target.value)} />
                 </div>
                 <div className="form-group">
-                  <label className="form-label">Porciones *</label>
-                  <input className="form-input" type="number" min={1} value={porciones} onChange={(e) => setPorciones(e.target.value)} required />
+                  <label className="form-label" htmlFor="edit-porciones">Porciones *</label>
+                  <input id="edit-porciones" ref={porcionesRef} className="form-input" type="number" min={1} value={porciones} onChange={(e) => setPorciones(e.target.value)} />
                 </div>
               </div>
               <div className="form-group">
-                <label className="form-label">Dificultad *</label>
-                <select className="form-select" value={dificultad} onChange={(e) => setDificultad(e.target.value as typeof dificultad)} required>
+                <label className="form-label" htmlFor="edit-dificultad">Dificultad *</label>
+                <select id="edit-dificultad" ref={dificultadRef} className="form-select" value={dificultad} onChange={(e) => setDificultad(e.target.value as typeof dificultad)}>
                   <option value="">Selecciona…</option>
                   {DIFICULTADES.map((d) => (
-                    <option key={d} value={d}>
-                      {d}
-                    </option>
+                    <option key={d} value={d}>{d}</option>
                   ))}
                 </select>
               </div>

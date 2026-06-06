@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useState, useRef, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import type { IIngrediente } from '../types';
@@ -9,6 +9,7 @@ interface IngredienteRow extends IIngrediente {
 
 const emptyIng = (id: number): IngredienteRow => ({ id, nombre: '', cantidad: 0, unidad: '' });
 const DIFICULTADES = ['Fácil', 'Media', 'Difícil'] as const;
+const CATEGORIAS = ['Italiana', 'Mexicana', 'Asiática', 'Mediterránea', 'Española', 'Francesa', 'Postres', 'Vegana', 'Otra'] as const;
 
 export default function CreateRecipe() {
   const navigate = useNavigate();
@@ -28,6 +29,22 @@ export default function CreateRecipe() {
   const [ingredientes, setIngredientes] = useState<IngredienteRow[]>([emptyIng(1)]);
   const [pasos, setPasos] = useState<{ id: number; texto: string }[]>([{ id: 1, texto: '' }]);
   const [nextId, setNextId] = useState(2);
+
+  // Refs para hacer scroll a cada campo requerido
+  const tituloRef      = useRef<HTMLInputElement>(null);
+  const descripcionRef = useRef<HTMLTextAreaElement>(null);
+  const categoriaRef   = useRef<HTMLSelectElement>(null);
+  const tiempoRef      = useRef<HTMLInputElement>(null);
+  const porcionesRef   = useRef<HTMLInputElement>(null);
+  const dificultadRef  = useRef<HTMLSelectElement>(null);
+
+  function scrollToField(ref: React.RefObject<HTMLElement | null>, msg: string) {
+    setError(msg);
+    setTimeout(() => {
+      ref.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      ref.current?.focus();
+    }, 50);
+  }
 
   function addIngrediente() {
     setIngredientes((p) => [...p, emptyIng(nextId)]);
@@ -51,7 +68,6 @@ export default function CreateRecipe() {
       const formData = new FormData();
       formData.append('image', file);
 
-      // Enviamos el archivo a nuestro backend
       const { data } = await api.post<{ secure_url: string }>('/api/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
@@ -80,16 +96,39 @@ export default function CreateRecipe() {
     e.preventDefault();
     setError('');
 
-    if (!titulo || !descripcion || !categoria || !tiempoMin || !porciones || !dificultad) {
-      setError('Completa todos los campos requeridos.');
+    // Validación campo por campo con scroll al faltante
+    if (!titulo.trim()) {
+      scrollToField(tituloRef, 'El título de la receta es obligatorio.');
+      return;
+    }
+    if (!descripcion.trim()) {
+      scrollToField(descripcionRef, 'La descripción es obligatoria.');
+      return;
+    }
+    if (!categoria) {
+      scrollToField(categoriaRef, 'Selecciona una categoría.');
+      return;
+    }
+    if (!tiempoMin || Number(tiempoMin) <= 0) {
+      scrollToField(tiempoRef, 'El tiempo de preparación es obligatorio.');
+      return;
+    }
+    if (!porciones || Number(porciones) <= 0) {
+      scrollToField(porcionesRef, 'El número de porciones es obligatorio.');
+      return;
+    }
+    if (!dificultad) {
+      scrollToField(dificultadRef, 'Selecciona la dificultad de la receta.');
       return;
     }
     if (ingredientes.some((i) => !i.nombre || !i.unidad || i.cantidad <= 0)) {
-      setError('Revisa que todos los ingredientes estén completos.');
+      setError('Revisa que todos los ingredientes estén completos (nombre, cantidad y unidad).');
+      document.getElementById('ingredientes-section')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
     if (pasos.some((s) => !s.texto.trim())) {
       setError('Todos los pasos deben tener texto.');
+      document.getElementById('pasos-section')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
 
@@ -133,45 +172,98 @@ export default function CreateRecipe() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} noValidate>
           <div className="recipe-form">
             {/* Columna izquierda */}
             <div className="recipe-form__section">
               <p className="recipe-form__section-title">Información general</p>
 
               <div className="form-group">
-                <label className="form-label">Título *</label>
-                <input className="form-input" value={titulo} onChange={(e) => setTitulo(e.target.value)} placeholder="Ej. Pasta al pesto con nueces" required />
+                <label className="form-label" htmlFor="field-titulo">Título *</label>
+                <input
+                  id="field-titulo"
+                  ref={tituloRef}
+                  className="form-input"
+                  value={titulo}
+                  onChange={(e) => setTitulo(e.target.value)}
+                  placeholder="Ej. Pasta al pesto con nueces"
+                />
               </div>
+
               <div className="form-group">
-                <label className="form-label">Descripción *</label>
-                <textarea className="form-textarea" value={descripcion} onChange={(e) => setDescripcion(e.target.value)} placeholder="Un plato clásico que…" rows={3} required />
+                <label className="form-label" htmlFor="field-descripcion">Descripción *</label>
+                <textarea
+                  id="field-descripcion"
+                  ref={descripcionRef}
+                  className="form-textarea"
+                  value={descripcion}
+                  onChange={(e) => setDescripcion(e.target.value)}
+                  placeholder="Un plato clásico que…"
+                  rows={3}
+                />
               </div>
+
               <div className="form-group">
-                <label className="form-label">Categoría *</label>
-                <input className="form-input" value={categoria} onChange={(e) => setCategoria(e.target.value)} placeholder="Ej. Italiana, Postres, Vegana…" required />
-              </div>
-              <div className="time-portions-grid">
-                <div className="form-group">
-                  <label className="form-label">Tiempo (min) *</label>
-                  <input className="form-input" type="number" min={1} value={tiempoMin} onChange={(e) => setTiempoMin(e.target.value)} placeholder="30" required />
-                </div>
-                <div className="form-group">
-                  <label className="form-label">Porciones *</label>
-                  <input className="form-input" type="number" min={1} value={porciones} onChange={(e) => setPorciones(e.target.value)} placeholder="4" required />
-                </div>
-              </div>
-              <div className="form-group">
-                <label className="form-label">Dificultad *</label>
-                <select className="form-select" value={dificultad} onChange={(e) => setDificultad(e.target.value as typeof dificultad)} required>
-                  <option value="">Selecciona…</option>
-                  {DIFICULTADES.map((d) => (
-                    <option key={d} value={d}>
-                      {d}
-                    </option>
+                <label className="form-label" htmlFor="field-categoria">Categoría *</label>
+                <select
+                  id="field-categoria"
+                  ref={categoriaRef}
+                  className="form-select"
+                  value={categoria}
+                  onChange={(e) => setCategoria(e.target.value)}
+                >
+                  <option value="">Selecciona una categoría…</option>
+                  {CATEGORIAS.map((c) => (
+                    <option key={c} value={c}>{c}</option>
                   ))}
                 </select>
               </div>
+
+              <div className="time-portions-grid">
+                <div className="form-group">
+                  <label className="form-label" htmlFor="field-tiempo">Tiempo (min) *</label>
+                  <input
+                    id="field-tiempo"
+                    ref={tiempoRef}
+                    className="form-input"
+                    type="number"
+                    min={1}
+                    value={tiempoMin}
+                    onChange={(e) => setTiempoMin(e.target.value)}
+                    placeholder="30"
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label" htmlFor="field-porciones">Porciones *</label>
+                  <input
+                    id="field-porciones"
+                    ref={porcionesRef}
+                    className="form-input"
+                    type="number"
+                    min={1}
+                    value={porciones}
+                    onChange={(e) => setPorciones(e.target.value)}
+                    placeholder="4"
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label" htmlFor="field-dificultad">Dificultad *</label>
+                <select
+                  id="field-dificultad"
+                  ref={dificultadRef}
+                  className="form-select"
+                  value={dificultad}
+                  onChange={(e) => setDificultad(e.target.value as typeof dificultad)}
+                >
+                  <option value="">Selecciona…</option>
+                  {DIFICULTADES.map((d) => (
+                    <option key={d} value={d}>{d}</option>
+                  ))}
+                </select>
+              </div>
+
               <div className="form-group">
                 <label className="form-label">Imagen de la receta</label>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -197,6 +289,7 @@ export default function CreateRecipe() {
                   </div>
                 )}
               </div>
+
               <div className="form-group">
                 <label className="form-label">Etiquetas</label>
                 <input className="form-input" value={tags} onChange={(e) => setTags(e.target.value)} placeholder="italiana, pasta, vegetariana (separadas por coma)" />
@@ -207,7 +300,7 @@ export default function CreateRecipe() {
             {/* Columna derecha */}
             <div className="recipe-form__section">
               {/* Ingredientes */}
-              <div>
+              <div id="ingredientes-section">
                 <p className="recipe-form__section-title">Ingredientes *</p>
                 <div className="dynamic-list" style={{ marginBottom: 12 }}>
                   {ingredientes.map((ing) => (
@@ -239,7 +332,7 @@ export default function CreateRecipe() {
               </div>
 
               {/* Pasos */}
-              <div style={{ marginTop: 24 }}>
+              <div id="pasos-section" style={{ marginTop: 24 }}>
                 <p className="recipe-form__section-title">Pasos de preparación *</p>
                 <div className="dynamic-list" style={{ marginBottom: 12 }}>
                   {pasos.map((paso, idx) => (
