@@ -1273,13 +1273,13 @@ p { text-wrap: pretty; }
 /* ══════════════════════════════════════════════════════════════════
    RECIPE FORM
    ══════════════════════════════════════════════════════════════════ */
-.recipe-form-page { max-width: 920px; margin: 0 auto; }
+.recipe-form-page { max-width: 680px; margin: 0 auto; }
 .recipe-form-page__header { margin-bottom: 48px; }
 .recipe-form-page__header h1 { margin-bottom: 10px; }
 .recipe-form-page__header p { color: var(--color-text-secondary); font-style: italic; }
 .recipe-form {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 40px 56px; align-items: start;
+  display: grid; grid-template-columns: 1fr;
+  gap: 48px; align-items: start;
 }
 .recipe-form__section { display: flex; flex-direction: column; gap: 20px; }
 .recipe-form__section-title {
