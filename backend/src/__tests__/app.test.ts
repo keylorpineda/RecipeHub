@@ -15,6 +15,7 @@ let server: Server;
 
 async function registerUser(nombre = 'Test User', email = 'test@example.com', password = 'password123') {
   const res = await request(app).post('/api/auth/register').send({ nombre, email, password });
+  if (res.status !== 201) console.log('REGISTER USER FAILED:', res.status, res.body);
   const setCookie = res.headers['set-cookie'] as unknown as string[];
   const cookie = setCookie?.find((c) => c.startsWith('token='))?.split(';')[0] ?? '';
   return { cookie, user: res.body.user as Record<string, unknown>, status: res.status };
@@ -38,6 +39,7 @@ async function createRecipe(cookie: string, overrides: Record<string, unknown> =
     .post('/api/recetas')
     .set('Cookie', cookie)
     .send({ ...recipeBase, ...overrides });
+  if (res.status !== 201) console.log('CREATE RECIPE FAILED:', res.status, res.body);
   return { receta: res.body.receta as Record<string, unknown>, status: res.status };
 }
 
@@ -60,7 +62,9 @@ afterAll(async () => {
 }, 30000);
 
 afterEach(async () => {
-  await Promise.all([User.deleteMany({}), Recipe.deleteMany({}), Comment.deleteMany({})]);
+  if (mongoose.connection.db) {
+    await mongoose.connection.db.dropDatabase();
+  }
 }, 10000);
 
 // ─── 1. Health ────────────────────────────────────────────────────────────────
