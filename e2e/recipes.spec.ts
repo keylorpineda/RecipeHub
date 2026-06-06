@@ -84,27 +84,34 @@ test.describe('Recipes — create flow', () => {
     await page.goto('/nueva');
 
     // Fill required fields
-    await page.locator('input[id*="titulo" i]').fill('Test E2E Recipe');
-    await page.locator('textarea[id*="descripcion" i]').fill('Receta creada por el test E2E');
+    await page.locator('input[id*="titulo" i]').fill('Pasta Carbonara E2E');
+    await page.locator('textarea[id*="descripcion" i]').fill('Receta clásica italiana con huevo, guanciale y Pecorino Romano. Sin crema.');
     await page.locator('select[id*="categoria" i]').selectOption({ index: 1 });
     await page.locator('input[id*="tiempo" i]').fill('25');
-    await page.locator('input[id*="porciones" i]').fill('2');
+    await page.locator('input[id*="porciones" i]').fill('4');
     await page.locator('select[id*="dificultad" i]').selectOption({ index: 1 });
+
+    // Add image URL so the recipe has a photo
+    await page.locator('input[type="url"]').fill('https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=900&q=80');
 
     // Fill the first ingredient row
     const ingRows = page.locator('.ingredient-row');
-    await ingRows.first().locator('input').nth(0).fill('Pasta');
-    await ingRows.first().locator('input').nth(1).fill('200');
+    await ingRows.first().locator('input').nth(0).fill('Espagueti');
+    await ingRows.first().locator('input').nth(1).fill('400');
     await ingRows.first().locator('input').nth(2).fill('g');
 
     // Fill the first step
-    await page.locator('.dynamic-item textarea').first().fill('Cocer la pasta al dente.');
+    await page.locator('.dynamic-item textarea').first().fill('Cocer la pasta al dente y reservar el agua de cocción.');
 
     await page.locator('button[type="submit"]').click();
 
     // Should navigate to /recetas/:id
     await page.waitForURL(/\/recetas\/[a-f0-9]+/, { timeout: 15000 });
     expect(page.url()).toMatch(/\/recetas\//);
+
+    // Verify the recipe detail shows the image
+    const recipeImage = page.locator('img').first();
+    await expect(recipeImage).toBeVisible({ timeout: 5000 });
   });
 });
 
