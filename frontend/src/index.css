@@ -837,18 +837,22 @@ p {
   background: #fff;
   color: #1a1814;
 }
-/* Select compacto de unidades en filas de ingredientes */
-.form-select--unit {
-  padding: 12px 28px 12px 14px;
-  background-position: right 10px center;
-  font-size: var(--text-sm);
-}
-.form-select--unit optgroup {
+/* Encabezado de grupo dentro del CustomSelect */
+.custom-select-group {
+  padding: 6px 16px 2px;
+  font-size: 0.68rem;
   font-weight: 700;
-  color: var(--color-text-muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-muted, #999);
+  pointer-events: none;
+  margin-top: 4px;
 }
-.form-select--unit option {
-  font-weight: 400;
+/* Trigger compacto para selects en filas de ingredientes */
+.custom-select-trigger--compact {
+  padding: 12px 32px 12px 14px;
+  font-size: var(--text-sm);
+  background-position: right 10px center;
 }
 .form-error {
   font-size: var(--text-xs);

@@ -3,38 +3,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import api from '../api/axios';
 import type { IRecipe, IIngrediente } from '../types';
 import CustomSelect from '../components/CustomSelect';
+import { CATEGORIAS, DIFICULTADES, UNIDADES } from '../constants/recipeOptions';
 
 interface IngredienteRow extends IIngrediente {
   id: number;
 }
-
-const DIFICULTADES = ['Fácil', 'Media', 'Difícil'] as const;
-const CATEGORIAS = [
-  'Italiana',
-  'Mexicana',
-  'Asiática',
-  'Japonesa',
-  'China',
-  'India',
-  'Mediterránea',
-  'Española',
-  'Francesa',
-  'Americana',
-  'Latinoamericana',
-  'Griega',
-  'Árabe',
-  'Postres',
-  'Panadería',
-  'Desayunos',
-  'Sopas y Caldos',
-  'Ensaladas',
-  'Mariscos',
-  'Carnes',
-  'Vegana',
-  'Vegetariana',
-  'Sin Gluten',
-  'Otra',
-] as const;
 
 export default function EditRecipe() {
   const { id } = useParams<{ id: string }>();
@@ -271,46 +244,7 @@ export default function EditRecipe() {
                           value={ing.cantidad || ''}
                           onChange={(e) => updateIngrediente(ing.id, 'cantidad', parseFloat(e.target.value) || 0)}
                         />
-                        <select className="form-select form-select--unit" value={ing.unidad} onChange={(e) => updateIngrediente(ing.id, 'unidad', e.target.value)}>
-                          <option value="">Unidad</option>
-                          <optgroup label="Volumen">
-                            <option>ml</option>
-                            <option>L</option>
-                            <option>taza</option>
-                            <option>tazas</option>
-                            <option>cucharada</option>
-                            <option>cucharadita</option>
-                          </optgroup>
-                          <optgroup label="Peso">
-                            <option>g</option>
-                            <option>kg</option>
-                            <option>lb</option>
-                            <option>oz</option>
-                          </optgroup>
-                          <optgroup label="Conteo">
-                            <option>unidad</option>
-                            <option>unidades</option>
-                            <option>pieza</option>
-                            <option>piezas</option>
-                            <option>diente</option>
-                            <option>dientes</option>
-                            <option>hoja</option>
-                            <option>hojas</option>
-                            <option>ramita</option>
-                          </optgroup>
-                          <optgroup label="Otros">
-                            <option>al gusto</option>
-                            <option>pizca</option>
-                            <option>puñado</option>
-                            <option>manojo</option>
-                            <option>rebanada</option>
-                            <option>rebanadas</option>
-                            <option>trozo</option>
-                            <option>trozos</option>
-                            <option>lata</option>
-                            <option>paquete</option>
-                          </optgroup>
-                        </select>
+                        <CustomSelect value={ing.unidad} onChange={(val) => updateIngrediente(ing.id, 'unidad', val)} options={UNIDADES} triggerClassName="custom-select-trigger--compact" />
                       </div>
                       {ingredientes.length > 1 && (
                         <button type="button" className="btn-remove" onClick={() => removeIngrediente(ing.id)}>
