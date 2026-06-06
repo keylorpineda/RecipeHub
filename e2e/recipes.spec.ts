@@ -44,13 +44,13 @@ test.describe('Recipes — create flow', () => {
     await requireApi(request);
     await registerAndLogin(page, `Autor_${timestamp}`, `check_${timestamp}@example.com`);
     await page.goto('/nueva');
-    // Core fields
+    // Core fields (categoria y dificultad ahora son CustomSelect — buscar por id del contenedor)
     await expect(page.locator('input[id*="titulo" i], input[placeholder*="título" i]')).toBeVisible();
     await expect(page.locator('textarea[id*="descripcion" i], textarea[placeholder*="descripción" i]')).toBeVisible();
-    await expect(page.locator('select[id*="categoria" i]')).toBeVisible();
+    await expect(page.locator('#field-categoria')).toBeVisible();
     await expect(page.locator('input[id*="tiempo" i]')).toBeVisible();
     await expect(page.locator('input[id*="porciones" i]')).toBeVisible();
-    await expect(page.locator('select[id*="dificultad" i]')).toBeVisible();
+    await expect(page.locator('#field-dificultad')).toBeVisible();
   });
 
   test('can add an extra ingredient row dynamically', async ({ page, request }) => {
@@ -86,10 +86,14 @@ test.describe('Recipes — create flow', () => {
     // Fill required fields
     await page.locator('input[id*="titulo" i]').fill('Pasta Carbonara E2E');
     await page.locator('textarea[id*="descripcion" i]').fill('Receta clásica italiana con huevo, guanciale y Pecorino Romano. Sin crema.');
-    await page.locator('select[id*="categoria" i]').selectOption({ index: 1 });
+    // Categoría: CustomSelect — abrir y elegir la primera opción real
+    await page.locator('#field-categoria .custom-select-trigger').click();
+    await page.locator('#field-categoria .custom-select-option:not(.custom-select-option--selected)').first().click();
     await page.locator('input[id*="tiempo" i]').fill('25');
     await page.locator('input[id*="porciones" i]').fill('4');
-    await page.locator('select[id*="dificultad" i]').selectOption({ index: 1 });
+    // Dificultad: CustomSelect — abrir y elegir la primera opción real
+    await page.locator('#field-dificultad .custom-select-trigger').click();
+    await page.locator('#field-dificultad .custom-select-option:not(.custom-select-option--selected)').first().click();
 
     // Add image URL so the recipe has a photo
     await page.locator('input[type="url"]').fill('https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=900&q=80');
