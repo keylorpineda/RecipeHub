@@ -1,7 +1,9 @@
 <div align="center">
   <h1>RecipeHub 🍳</h1>
 
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=24&pause=1000&color=F7B731&center=true&vCenter=true&width=600&lines=Descubre+Nuevas+Recetas;Comparte+tu+Pasi%C3%B3n;Plataforma+Colaborativa" alt="Typing SVG" />
+  <p align="center">
+    <em>Descubre Nuevas Recetas · Comparte tu Pasión · Plataforma Colaborativa</em>
+  </p>
 
   <p align="center">
     <b>Plataforma colaborativa de recetas de cocina</b> desarrollada como proyecto académico para <strong>EIF209 Programación IV</strong>, Universidad Nacional Sede Regional Brunca.
@@ -13,9 +15,7 @@
   </p>
 </div>
 
-<br/>
-<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/solar.png" width="100%" />
-<br/>
+---
 
 ## 🛠️ Stack Tecnológico
 
@@ -289,8 +289,6 @@ Se ejecutan automáticamente en cada push via GitHub Actions con servicio MongoD
 
 ## 📄 Licencia
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/solar.png" width="100%" />
-</p>
+---
 
 Proyecto académico — **Universidad Nacional, Sede Regional Brunca**, I Semestre 2026
