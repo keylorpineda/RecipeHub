@@ -36,36 +36,36 @@
 
 > Base de operaciones configurada en el servidor para el correcto funcionamiento.
 
-| 🧰 Software        |     🏷️ Versión     | 🎯 Propósito                             |
-| :----------------- | :----------------: | :--------------------------------------- |
-| **Docker Engine**  | <kbd>29.5.2</kbd>  | Contenerización de servicios             |
-| **Docker Compose** |   <kbd>v2</kbd>    | Orquestación de contenedores             |
-| **Nginx**          |  <kbd>1.24</kbd>   | Reverse proxy + servir frontend estático |
-| **Certbot**        | <kbd>Latest</kbd>  | Gestión automática de certificados SSL   |
-| **Node.js**        |  <kbd>20.x</kbd>   | Build del frontend en el VPS             |
-| **Git**            | <kbd>Sistema</kbd> | Clonar y actualizar el repositorio       |
+| 🧰 Software                                                                                                      |                                  🏷️ Versión                                   | 🎯 Propósito                 |
+| :--------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------: | :--------------------------- |
+| <img src="https://img.shields.io/badge/Docker_Engine-2496ED?style=for-the-badge&logo=docker&logoColor=white" />  | <img src="https://img.shields.io/badge/29.5.2-1C1C1C?style=for-the-badge" />  | Contenerización de servicios |
+| <img src="https://img.shields.io/badge/Docker_Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white" /> |   <img src="https://img.shields.io/badge/v2-1C1C1C?style=for-the-badge" />    | Orquestación de contenedores |
+| <img src="https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white" />           |  <img src="https://img.shields.io/badge/1.24-1C1C1C?style=for-the-badge" />   | Reverse proxy + frontend     |
+| <img src="https://img.shields.io/badge/Certbot-FF8A00?style=for-the-badge&logo=letsencrypt&logoColor=white" />   | <img src="https://img.shields.io/badge/Latest-1C1C1C?style=for-the-badge" />  | Certificados SSL automáticos |
+| <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" />     |  <img src="https://img.shields.io/badge/20.x-1C1C1C?style=for-the-badge" />   | Build del frontend en VPS    |
+| <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" />               | <img src="https://img.shields.io/badge/Sistema-1C1C1C?style=for-the-badge" /> | Control de versiones         |
 
 ### 🛡️ Puertos Abiertos (Firewall)
 
-|   🔌 Puerto    | ⚙️ Protocolo | 📝 Uso                                  |
-| :------------: | :----------: | :-------------------------------------- |
-| <kbd>22</kbd>  |    `TCP`     | 🔐 **SSH** — acceso al servidor         |
-| <kbd>80</kbd>  |    `TCP`     | 🌐 **HTTP** — redirige a HTTPS (301)    |
-| <kbd>443</kbd> |    `TCP`     | 🔒 **HTTPS** — tráfico de la aplicación |
+|                                                 🔌 Puerto                                                  |                               ⚙️ Protocolo                                | 📝 Uso                               |
+| :--------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------: | :----------------------------------- |
+|     <img src="https://img.shields.io/badge/22-1C1C1C?style=for-the-badge&logo=ssh&logoColor=white" />      | <img src="https://img.shields.io/badge/TCP-0052CC?style=for-the-badge" /> | 🔐 **SSH** — acceso al servidor      |
+|     <img src="https://img.shields.io/badge/80-1C1C1C?style=for-the-badge&logo=http&logoColor=white" />     | <img src="https://img.shields.io/badge/TCP-0052CC?style=for-the-badge" /> | 🌐 **HTTP** — redirige a HTTPS (301) |
+| <img src="https://img.shields.io/badge/443-1C1C1C?style=for-the-badge&logo=letsencrypt&logoColor=white" /> | <img src="https://img.shields.io/badge/TCP-0052CC?style=for-the-badge" /> | 🔒 **HTTPS** — tráfico seguro        |
 
 ### 🐳 Contenedores Docker en Producción
 
-| 📦 Contenedor       | 🖼️ Imagen           |         🚪 Puerto         | 📋 Descripción        |
-| :------------------ | :------------------ | :-----------------------: | :-------------------- |
-| `recipehub-api-1`   | 🟩 _Node 20 Alpine_ | <kbd>4000</kbd> (interno) | API REST Express      |
-| `recipehub-mongo-1` | 🍃 _mongo:7_        |      🚫 Sin exponer       | Base de datos MongoDB |
+| 📦 Contenedor                                                                                                         | 🖼️ Imagen                                                                                                           |                                   🚪 Puerto                                   | 📋 Descripción        |
+| :-------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------ | :---------------------------------------------------------------------------: | :-------------------- |
+| <img src="https://img.shields.io/badge/recipehub--api--1-F7B731?style=for-the-badge&logo=docker&logoColor=white" />   | <img src="https://img.shields.io/badge/Node_20_Alpine-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" /> |  <img src="https://img.shields.io/badge/4000-1C1C1C?style=for-the-badge" />   | API REST Express      |
+| <img src="https://img.shields.io/badge/recipehub--mongo--1-F7B731?style=for-the-badge&logo=docker&logoColor=white" /> | <img src="https://img.shields.io/badge/mongo:7-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white" />          | <img src="https://img.shields.io/badge/Privado-FF0000?style=for-the-badge" /> | Base de datos MongoDB |
 
 ### 🌍 Dominio y DNS
 
-| 🔗 Subdominio      |   🧩 Tipo    |        🎯 Apunta a         |
-| :----------------- | :----------: | :------------------------: |
-| `app.recipehub.me` | **A Record** | <kbd>159.223.149.208</kbd> |
-| `api.recipehub.me` | **A Record** | <kbd>159.223.149.208</kbd> |
+| 🔗 Subdominio                                                                                                         |                                    🧩 Tipo                                     |                                      🎯 Apunta a                                      |
+| :-------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------: |
+| <img src="https://img.shields.io/badge/app.recipehub.me-61DAFB?style=for-the-badge&logo=react&logoColor=white" />     | <img src="https://img.shields.io/badge/A_Record-1C1C1C?style=for-the-badge" /> | <img src="https://img.shields.io/badge/159.223.149.208-0052CC?style=for-the-badge" /> |
+| <img src="https://img.shields.io/badge/api.recipehub.me-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" /> | <img src="https://img.shields.io/badge/A_Record-1C1C1C?style=for-the-badge" /> | <img src="https://img.shields.io/badge/159.223.149.208-0052CC?style=for-the-badge" /> |
 
 > **Registrador:** Namecheap _(dominio `.me` gratis via GitHub Student Pack)_
 
@@ -102,24 +102,24 @@ echo "VITE_API_URL=http://localhost:4000" > frontend/.env
 
 ### ⚙️ Variables del `.env` raíz
 
-| 🔑 Variable                           | 📖 Descripción                 | 💡 Ejemplo                                  |
-| :------------------------------------ | :----------------------------- | :------------------------------------------ |
-| <kbd>PORT</kbd>                       | Puerto del servidor API        | `4000`                                      |
-| <kbd>MONGO_INITDB_ROOT_USERNAME</kbd> | Usuario root de MongoDB        | `mongo_user`                                |
-| <kbd>MONGO_INITDB_ROOT_PASSWORD</kbd> | Contraseña root de MongoDB     | `password_seguro`                           |
-| <kbd>MONGO_URI</kbd>                  | URI de conexión MongoDB        | `mongodb://user:pass@mongo:27017/recipehub` |
-| <kbd>JWT_SECRET</kbd>                 | Secreto para firmar JWT        | `s3cr3t0_muy_l4rg0`                         |
-| <kbd>FRONTEND_URL</kbd>               | URL del frontend para CORS     | `https://app.recipehub.me`                  |
-| <kbd>NODE_ENV</kbd>                   | Entorno de ejecución           | `production`                                |
-| <kbd>CLOUDINARY_CLOUD_NAME</kbd>      | Nombre del cloud de Cloudinary | `dxsrmgezg`                                 |
-| <kbd>CLOUDINARY_API_KEY</kbd>         | API Key de Cloudinary          | `396491736294185`                           |
-| <kbd>CLOUDINARY_API_SECRET</kbd>      | API Secret de Cloudinary       | `tu_api_secret`                             |
+| 🔑 Variable                                                                                                                                  | 📖 Descripción             | 💡 Ejemplo                  |
+| :------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------- | :-------------------------- |
+| <img src="https://img.shields.io/badge/PORT-4000-000000?style=flat-square&labelColor=2C2C2C" />                                              | Puerto del API             | `4000`                      |
+| <img src="https://img.shields.io/badge/MONGO__INITDB__ROOT__USERNAME-mongo__user-4EA94B?style=flat-square&labelColor=2C2C2C&logo=mongodb" /> | Usuario root de MongoDB    | `mongo_user`                |
+| <img src="https://img.shields.io/badge/MONGO__INITDB__ROOT__PASSWORD-***-4EA94B?style=flat-square&labelColor=2C2C2C&logo=mongodb" />         | Contraseña root de MongoDB | `password_seguro`           |
+| <img src="https://img.shields.io/badge/MONGO__URI-mongodb://...-4EA94B?style=flat-square&labelColor=2C2C2C&logo=mongodb" />                  | URI de conexión MongoDB    | `mongodb://user:pass@mongo` |
+| <img src="https://img.shields.io/badge/JWT__SECRET-***-FF0000?style=flat-square&labelColor=2C2C2C&logo=jsonwebtokens" />                     | Secreto para firmar JWT    | `s3cr3t0`                   |
+| <img src="https://img.shields.io/badge/FRONTEND__URL-app.recipehub.me-61DAFB?style=flat-square&labelColor=2C2C2C" />                         | URL frontend para CORS     | `https://app.recipehub.me`  |
+| <img src="https://img.shields.io/badge/NODE__ENV-production-339933?style=flat-square&labelColor=2C2C2C" />                                   | Entorno de ejecución       | `production`                |
+| <img src="https://img.shields.io/badge/CLOUDINARY__CLOUD__NAME-dxsrmgezg-3448C5?style=flat-square&labelColor=2C2C2C&logo=cloudinary" />      | Cloud de Cloudinary        | `dxsrmgezg`                 |
+| <img src="https://img.shields.io/badge/CLOUDINARY__API__KEY-396491...-3448C5?style=flat-square&labelColor=2C2C2C&logo=cloudinary" />         | API Key Cloudinary         | `396491...`                 |
+| <img src="https://img.shields.io/badge/CLOUDINARY__API__SECRET-***-3448C5?style=flat-square&labelColor=2C2C2C&logo=cloudinary" />            | API Secret Cloudinary      | `tu_api_secret`             |
 
 ### 🎨 Variable del `frontend/.env`
 
-| 🔑 Variable             | 📖 Descripción     | 🛠️ Dev                  | 🚀 Producción              |
-| :---------------------- | :----------------- | :---------------------- | :------------------------- |
-| <kbd>VITE_API_URL</kbd> | URL base de la API | `http://localhost:4000` | `https://api.recipehub.me` |
+| 🔑 Variable                                                                                                                  | 📖 Descripción     | 🛠️ Dev                  | 🚀 Producción              |
+| :--------------------------------------------------------------------------------------------------------------------------- | :----------------- | :---------------------- | :------------------------- |
+| <img src="https://img.shields.io/badge/VITE__API__URL-app.recipehub-61DAFB?style=flat-square&labelColor=2C2C2C&logo=vite" /> | URL base de la API | `http://localhost:4000` | `https://api.recipehub.me` |
 
 ## 🚀 Guía de Despliegue desde Cero
 
@@ -204,14 +204,14 @@ curl https://api.recipehub.me/api/health
 
 En **GitHub → Settings → Secrets and variables → Actions → New repository secret**, agregar exactamente estos 6 secrets:
 
-| 🔐 Secret                      | 📖 Descripción                 | 🔍 Cómo obtenerlo                      |
-| :----------------------------- | :----------------------------- | :------------------------------------- |
-| <kbd>VPS_HOST</kbd>            | IP pública del VPS             | Panel de control del proveedor         |
-| <kbd>VPS_USER</kbd>            | Usuario SSH del VPS            | Normalmente `root` en un VPS nuevo     |
-| <kbd>VPS_SSH_KEY</kbd>         | Llave privada SSH completa     | Contenido de `~/.ssh/id_ed25519` local |
-| <kbd>MONGO_URI</kbd>           | URI de conexión a MongoDB      | `mongodb://mongo_user:pass@mongo`      |
-| <kbd>JWT_SECRET</kbd>          | Secreto para firmar tokens JWT | Generar con: `openssl rand -base64 48` |
-| <kbd>MONGO_ROOT_PASSWORD</kbd> | Contraseña root de MongoDB     | Contraseña elegida                     |
+| 🔐 Secret                                                                                                                | 📖 Descripción                 | 🔍 Cómo obtenerlo                      |
+| :----------------------------------------------------------------------------------------------------------------------- | :----------------------------- | :------------------------------------- |
+| <img src="https://img.shields.io/badge/VPS__HOST-000000?style=for-the-badge&logo=digitalocean&logoColor=white" />        | IP pública del VPS             | Panel de control del proveedor         |
+| <img src="https://img.shields.io/badge/VPS__USER-000000?style=for-the-badge&logo=linux&logoColor=white" />               | Usuario SSH del VPS            | Normalmente `root` en un VPS nuevo     |
+| <img src="https://img.shields.io/badge/VPS__SSH__KEY-000000?style=for-the-badge&logo=ssh&logoColor=white" />             | Llave privada SSH completa     | Contenido de `~/.ssh/id_ed25519` local |
+| <img src="https://img.shields.io/badge/MONGO__URI-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white" />            | URI de conexión a MongoDB      | `mongodb://mongo_user:pass@mongo`      |
+| <img src="https://img.shields.io/badge/JWT__SECRET-FF0000?style=for-the-badge&logo=jsonwebtokens&logoColor=white" />     | Secreto para firmar tokens JWT | Generar con: `openssl rand -base64 48` |
+| <img src="https://img.shields.io/badge/MONGO__ROOT__PASSWORD-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white" /> | Contraseña root de MongoDB     | Contraseña elegida                     |
 
 A partir de aquí cada `push` a `main` dispara el pipeline automáticamente: tests → deploy → health check.
 
