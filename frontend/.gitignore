@@ -1,5 +1,38 @@
-node_modules
-dist
+# Dependencias
+node_modules/
+
+# Build Vite
+dist/
+*.tsbuildinfo
+frontend/tsconfig.tsbuildinfo
+
+# Variables de entorno
 .env
+.env.*
 .env.local
+.env.*.local
+!.env.example
+
+# Logs
 *.log
+npm-debug.log*
+logs/
+
+# Testing
+coverage/
+
+# Cache Vite
+.vite/
+.cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Claude Code
+.claude/
+skills-lock.json
