@@ -1,21 +1,14 @@
 import { Router, Request, Response } from 'express';
 import Recipe from '../models/Recipe';
 import authMiddleware, { AuthRequest } from '../middleware/auth';
+import { buildRecipeFilter } from '../utils/filters';
 
 const router = Router();
 
 // GET /api/recetas
 router.get('/', async (req: Request, res: Response) => {
   try {
-    const filter: Record<string, unknown> = {};
-
-    if (req.query.categoria) filter.categoria = req.query.categoria as string;
-    if (req.query.dificultad) filter.dificultad = req.query.dificultad as string;
-    if (req.query.tags) {
-      const tags = Array.isArray(req.query.tags) ? (req.query.tags as string[]) : [req.query.tags as string];
-      filter.tags = { $in: tags };
-    }
-
+    const filter = buildRecipeFilter(req.query as Record<string, unknown>);
     const recetas = await Recipe.find(filter).populate('autorId', 'nombre email');
     return res.status(200).json({ recetas });
   } catch (err) {

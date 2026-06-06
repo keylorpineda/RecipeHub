@@ -278,14 +278,55 @@ recipehub/
 
 ## 🧪 Tests
 
+### Backend — Integración
+
 ```bash
-cd backend
-npm test                # correr 25+ tests de integración
-npm run test:coverage   # con reporte de cobertura de código
+cd backend && npm test
 ```
 
-Los tests cubren todos los endpoints: auth, recetas y comentarios.
-Se ejecutan automáticamente en cada push via GitHub Actions con servicio MongoDB.
+25+ tests cubriendo todos los endpoints (auth, recetas, comentarios) con MongoDB real vía Supertest.
+
+### Backend — Unitarios
+
+```bash
+cd backend && npm run test:unit
+```
+
+33 tests puros de validadores, filtros y lógica de negocio — sin base de datos, sin HTTP:
+`isValidEmail`, `isValidCalificacion`, `isTrimmedNonEmpty`, `isAuthorized`, `buildRecipeFilter`.
+
+### Frontend — Unitarios
+
+```bash
+cd frontend && npm test
+```
+
+41 tests de componentes con **React Testing Library** + **Vitest**:
+
+- `StarRating` — renderizado, valor inicial, interacción, accesibilidad
+- `RecipeCard` — título, tiempo, dificultad, placeholder, link correcto
+- `ProtectedRoute` — spinner, redirección, render de children
+- `formatters.ts` — `formatTime`, `getInitials`, `calcularPromedio`
+
+### E2E — Playwright
+
+```bash
+npm run test:e2e          # headless contra https://app.recipehub.me
+npm run test:e2e:ui       # con interfaz visual
+npm run test:e2e:report   # ver reporte del último run
+```
+
+Tests end-to-end corriendo contra producción real en 5 suites:
+
+- **health** — API health endpoint
+- **home** — carga, título, filtros, skeleton/cards
+- **auth** — login, register, protección de rutas
+- **recipes** — flujo completo de creación, detalle, autorización
+- **navigation** — navbar, links, mobile hamburger, SPA routing
+
+Se ejecutan automáticamente en GitHub Actions **después** del deploy SSH.
+
+Los tests de integración y unitarios del backend se ejecutan en cada push via GitHub Actions con servicio MongoDB.
 
 ## 📄 Licencia
 
