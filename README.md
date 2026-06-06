@@ -24,6 +24,47 @@
 | **Infraestructura** | <img src="https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white" alt="Ubuntu" /> <img src="https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" /> <img src="https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white" alt="Nginx" />                                                                                                                                                    |
 | **CI/CD**           | <img src="https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white" alt="GitHub Actions" />                                                                                                                                                                                                                                                                                                                                                                     |
 
+## 🖥️ Infraestructura del VPS
+
+**Proveedor:** DigitalOcean (crédito GitHub Student Pack)  
+**IP:** 159.223.149.208  
+**OS:** Ubuntu 24.04 LTS — 2 GB RAM · 1 vCPU · 50 GB SSD
+
+### Software instalado
+
+| Software       | Versión     | Propósito                                |
+| -------------- | ----------- | ---------------------------------------- |
+| Docker Engine  | 29.5.2      | Contenerización de servicios             |
+| Docker Compose | v2 (plugin) | Orquestación de contenedores             |
+| Nginx          | 1.24        | Reverse proxy + servir frontend estático |
+| Certbot        | Latest      | Gestión automática de certificados SSL   |
+| Node.js        | 20.x        | Build del frontend en el VPS             |
+| Git            | Sistema     | Clonar y actualizar el repositorio       |
+
+### Puertos abiertos en firewall
+
+| Puerto | Protocolo | Uso                              |
+| ------ | --------- | -------------------------------- |
+| 22     | TCP       | SSH — acceso al servidor         |
+| 80     | TCP       | HTTP — redirige a HTTPS (301)    |
+| 443    | TCP       | HTTPS — tráfico de la aplicación |
+
+### Contenedores Docker en producción
+
+| Contenedor          | Imagen                        | Puerto         | Descripción           |
+| ------------------- | ----------------------------- | -------------- | --------------------- |
+| `recipehub-api-1`   | Node 20 Alpine (build propio) | 4000 (interno) | API REST Express      |
+| `recipehub-mongo-1` | mongo:7                       | Sin exponer    | Base de datos MongoDB |
+
+### Dominio y DNS
+
+| Subdominio         | Tipo     | Apunta a        |
+| ------------------ | -------- | --------------- |
+| `app.recipehub.me` | A Record | 159.223.149.208 |
+| `api.recipehub.me` | A Record | 159.223.149.208 |
+
+Registrador: Namecheap (dominio `.me` gratis via GitHub Student Pack)
+
 ## 🌐 URLs de Producción
 
 - 🖥️ **Frontend:** [https://app.recipehub.me](https://app.recipehub.me)
