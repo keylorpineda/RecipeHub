@@ -223,14 +223,12 @@ export default function Home() {
                   />
                 </div>
                 <CustomSelect
-                  className="form-select"
                   style={{ flex: '0 1 165px' }}
                   value={categoria}
                   onChange={(val) => setCategoria(val)}
                   options={CATEGORIAS.map(c => ({ value: c, label: c === 'Todas' ? 'Categoría' : c }))}
                 />
                 <CustomSelect
-                  className="form-select"
                   style={{ flex: '0 1 155px' }}
                   value={dificultad}
                   onChange={(val) => setDificultad(val)}
