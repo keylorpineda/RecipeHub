@@ -98,11 +98,13 @@ test.describe('Recipes — create flow', () => {
     // Add image URL so the recipe has a photo
     await page.locator('input[type="url"]').fill('https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=900&q=80');
 
-    // Fill the first ingredient row
+    // Fill the first ingredient row (nombre, cantidad; unidad es CustomSelect)
     const ingRows = page.locator('.ingredient-row');
     await ingRows.first().locator('input').nth(0).fill('Espagueti');
     await ingRows.first().locator('input').nth(1).fill('400');
-    await ingRows.first().locator('input').nth(2).fill('g');
+    // Unidad: abrir el CustomSelect y elegir 'g'
+    await ingRows.first().locator('.custom-select-trigger').click();
+    await ingRows.first().locator('.custom-select-option', { hasText: /^g$/ }).click();
 
     // Fill the first step
     await page.locator('.dynamic-item textarea').first().fill('Cocer la pasta al dente y reservar el agua de cocción.');
