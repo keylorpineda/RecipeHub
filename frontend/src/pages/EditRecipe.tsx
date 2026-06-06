@@ -2,13 +2,39 @@ import { useEffect, useState, useRef, type FormEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../api/axios';
 import type { IRecipe, IIngrediente } from '../types';
+import CustomSelect from '../components/CustomSelect';
 
 interface IngredienteRow extends IIngrediente {
   id: number;
 }
 
 const DIFICULTADES = ['Fácil', 'Media', 'Difícil'] as const;
-const CATEGORIAS = ['Italiana', 'Mexicana', 'Asiática', 'Mediterránea', 'Española', 'Francesa', 'Postres', 'Vegana', 'Otra'] as const;
+const CATEGORIAS = [
+  'Italiana',
+  'Mexicana',
+  'Asiática',
+  'Japonesa',
+  'China',
+  'India',
+  'Mediterránea',
+  'Española',
+  'Francesa',
+  'Americana',
+  'Latinoamericana',
+  'Griega',
+  'Árabe',
+  'Postres',
+  'Panadería',
+  'Desayunos',
+  'Sopas y Caldos',
+  'Ensaladas',
+  'Mariscos',
+  'Carnes',
+  'Vegana',
+  'Vegetariana',
+  'Sin Gluten',
+  'Otra',
+] as const;
 
 export default function EditRecipe() {
   const { id } = useParams<{ id: string }>();
@@ -29,18 +55,18 @@ export default function EditRecipe() {
   const [pasos, setPasos] = useState<{ id: number; texto: string }[]>([]);
   const [nextId, setNextId] = useState(100);
 
-  const tituloRef      = useRef<HTMLInputElement>(null);
+  const tituloRef = useRef<HTMLInputElement>(null);
   const descripcionRef = useRef<HTMLTextAreaElement>(null);
-  const categoriaRef   = useRef<HTMLSelectElement>(null);
-  const tiempoRef      = useRef<HTMLInputElement>(null);
-  const porcionesRef   = useRef<HTMLInputElement>(null);
-  const dificultadRef  = useRef<HTMLSelectElement>(null);
+  const categoriaRef = useRef<HTMLDivElement>(null);
+  const tiempoRef = useRef<HTMLInputElement>(null);
+  const porcionesRef = useRef<HTMLInputElement>(null);
+  const dificultadRef = useRef<HTMLDivElement>(null);
 
-  function scrollToField(ref: React.RefObject<HTMLElement | null>, msg: string) {
+  function scrollToField(ref: React.RefObject<HTMLElement | null>, msg: string, focus = true) {
     setError(msg);
     setTimeout(() => {
       ref.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      ref.current?.focus();
+      if (focus) (ref.current as HTMLElement | null)?.focus?.();
     }, 50);
   }
 
@@ -99,7 +125,7 @@ export default function EditRecipe() {
       return;
     }
     if (!categoria) {
-      scrollToField(categoriaRef, 'Selecciona una categoría.');
+      scrollToField(categoriaRef, 'Selecciona una categoría.', false);
       return;
     }
     if (!tiempoMin || Number(tiempoMin) <= 0) {
@@ -111,7 +137,7 @@ export default function EditRecipe() {
       return;
     }
     if (!dificultad) {
-      scrollToField(dificultadRef, 'Selecciona la dificultad de la receta.');
+      scrollToField(dificultadRef, 'Selecciona la dificultad de la receta.', false);
       return;
     }
     setSaving(true);
@@ -169,40 +195,52 @@ export default function EditRecipe() {
             <div className="recipe-form__section">
               <p className="recipe-form__section-title">Información general</p>
               <div className="form-group">
-                <label className="form-label" htmlFor="edit-titulo">Título *</label>
+                <label className="form-label" htmlFor="edit-titulo">
+                  Título *
+                </label>
                 <input id="edit-titulo" ref={tituloRef} className="form-input" value={titulo} onChange={(e) => setTitulo(e.target.value)} />
               </div>
               <div className="form-group">
-                <label className="form-label" htmlFor="edit-descripcion">Descripción *</label>
+                <label className="form-label" htmlFor="edit-descripcion">
+                  Descripción *
+                </label>
                 <textarea id="edit-descripcion" ref={descripcionRef} className="form-textarea" value={descripcion} onChange={(e) => setDescripcion(e.target.value)} rows={3} />
               </div>
               <div className="form-group">
-                <label className="form-label" htmlFor="edit-categoria">Categoría *</label>
-                <select id="edit-categoria" ref={categoriaRef} className="form-select" value={categoria} onChange={(e) => setCategoria(e.target.value)}>
-                  <option value="">Selecciona una categoría…</option>
-                  {CATEGORIAS.map((c) => (
-                    <option key={c} value={c}>{c}</option>
-                  ))}
-                </select>
+                <label className="form-label">Categoría *</label>
+                <div ref={categoriaRef}>
+                  <CustomSelect
+                    id="edit-categoria"
+                    value={categoria}
+                    onChange={setCategoria}
+                    options={[{ value: '', label: 'Selecciona una categoría…' }, ...CATEGORIAS.map((c) => ({ value: c, label: c }))]}
+                  />
+                </div>
               </div>
               <div className="time-portions-grid">
                 <div className="form-group">
-                  <label className="form-label" htmlFor="edit-tiempo">Tiempo (min) *</label>
+                  <label className="form-label" htmlFor="edit-tiempo">
+                    Tiempo (min) *
+                  </label>
                   <input id="edit-tiempo" ref={tiempoRef} className="form-input" type="number" min={1} value={tiempoMin} onChange={(e) => setTiempoMin(e.target.value)} />
                 </div>
                 <div className="form-group">
-                  <label className="form-label" htmlFor="edit-porciones">Porciones *</label>
+                  <label className="form-label" htmlFor="edit-porciones">
+                    Porciones *
+                  </label>
                   <input id="edit-porciones" ref={porcionesRef} className="form-input" type="number" min={1} value={porciones} onChange={(e) => setPorciones(e.target.value)} />
                 </div>
               </div>
               <div className="form-group">
-                <label className="form-label" htmlFor="edit-dificultad">Dificultad *</label>
-                <select id="edit-dificultad" ref={dificultadRef} className="form-select" value={dificultad} onChange={(e) => setDificultad(e.target.value as typeof dificultad)}>
-                  <option value="">Selecciona…</option>
-                  {DIFICULTADES.map((d) => (
-                    <option key={d} value={d}>{d}</option>
-                  ))}
-                </select>
+                <label className="form-label">Dificultad *</label>
+                <div ref={dificultadRef}>
+                  <CustomSelect
+                    id="edit-dificultad"
+                    value={dificultad}
+                    onChange={(v) => setDificultad(v as typeof dificultad)}
+                    options={[{ value: '', label: 'Selecciona…' }, ...DIFICULTADES.map((d) => ({ value: d, label: d }))]}
+                  />
+                </div>
               </div>
               <div className="form-group">
                 <label className="form-label">URL de imagen</label>
@@ -233,7 +271,46 @@ export default function EditRecipe() {
                           value={ing.cantidad || ''}
                           onChange={(e) => updateIngrediente(ing.id, 'cantidad', parseFloat(e.target.value) || 0)}
                         />
-                        <input className="form-input" placeholder="Unidad" value={ing.unidad} onChange={(e) => updateIngrediente(ing.id, 'unidad', e.target.value)} />
+                        <select className="form-select form-select--unit" value={ing.unidad} onChange={(e) => updateIngrediente(ing.id, 'unidad', e.target.value)}>
+                          <option value="">Unidad</option>
+                          <optgroup label="Volumen">
+                            <option>ml</option>
+                            <option>L</option>
+                            <option>taza</option>
+                            <option>tazas</option>
+                            <option>cucharada</option>
+                            <option>cucharadita</option>
+                          </optgroup>
+                          <optgroup label="Peso">
+                            <option>g</option>
+                            <option>kg</option>
+                            <option>lb</option>
+                            <option>oz</option>
+                          </optgroup>
+                          <optgroup label="Conteo">
+                            <option>unidad</option>
+                            <option>unidades</option>
+                            <option>pieza</option>
+                            <option>piezas</option>
+                            <option>diente</option>
+                            <option>dientes</option>
+                            <option>hoja</option>
+                            <option>hojas</option>
+                            <option>ramita</option>
+                          </optgroup>
+                          <optgroup label="Otros">
+                            <option>al gusto</option>
+                            <option>pizca</option>
+                            <option>puñado</option>
+                            <option>manojo</option>
+                            <option>rebanada</option>
+                            <option>rebanadas</option>
+                            <option>trozo</option>
+                            <option>trozos</option>
+                            <option>lata</option>
+                            <option>paquete</option>
+                          </optgroup>
+                        </select>
                       </div>
                       {ingredientes.length > 1 && (
                         <button type="button" className="btn-remove" onClick={() => removeIngrediente(ing.id)}>

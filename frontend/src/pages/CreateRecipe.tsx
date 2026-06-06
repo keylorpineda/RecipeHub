@@ -2,6 +2,7 @@ import { useState, useRef, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import type { IIngrediente } from '../types';
+import CustomSelect from '../components/CustomSelect';
 
 interface IngredienteRow extends IIngrediente {
   id: number;
@@ -9,7 +10,32 @@ interface IngredienteRow extends IIngrediente {
 
 const emptyIng = (id: number): IngredienteRow => ({ id, nombre: '', cantidad: 0, unidad: '' });
 const DIFICULTADES = ['Fácil', 'Media', 'Difícil'] as const;
-const CATEGORIAS = ['Italiana', 'Mexicana', 'Asiática', 'Mediterránea', 'Española', 'Francesa', 'Postres', 'Vegana', 'Otra'] as const;
+const CATEGORIAS = [
+  'Italiana',
+  'Mexicana',
+  'Asiática',
+  'Japonesa',
+  'China',
+  'India',
+  'Mediterránea',
+  'Española',
+  'Francesa',
+  'Americana',
+  'Latinoamericana',
+  'Griega',
+  'Árabe',
+  'Postres',
+  'Panadería',
+  'Desayunos',
+  'Sopas y Caldos',
+  'Ensaladas',
+  'Mariscos',
+  'Carnes',
+  'Vegana',
+  'Vegetariana',
+  'Sin Gluten',
+  'Otra',
+] as const;
 
 export default function CreateRecipe() {
   const navigate = useNavigate();
@@ -31,18 +57,18 @@ export default function CreateRecipe() {
   const [nextId, setNextId] = useState(2);
 
   // Refs para hacer scroll a cada campo requerido
-  const tituloRef      = useRef<HTMLInputElement>(null);
+  const tituloRef = useRef<HTMLInputElement>(null);
   const descripcionRef = useRef<HTMLTextAreaElement>(null);
-  const categoriaRef   = useRef<HTMLSelectElement>(null);
-  const tiempoRef      = useRef<HTMLInputElement>(null);
-  const porcionesRef   = useRef<HTMLInputElement>(null);
-  const dificultadRef  = useRef<HTMLSelectElement>(null);
+  const categoriaRef = useRef<HTMLDivElement>(null);
+  const tiempoRef = useRef<HTMLInputElement>(null);
+  const porcionesRef = useRef<HTMLInputElement>(null);
+  const dificultadRef = useRef<HTMLDivElement>(null);
 
-  function scrollToField(ref: React.RefObject<HTMLElement | null>, msg: string) {
+  function scrollToField(ref: React.RefObject<HTMLElement | null>, msg: string, focus = true) {
     setError(msg);
     setTimeout(() => {
       ref.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      ref.current?.focus();
+      if (focus) (ref.current as HTMLElement | null)?.focus?.();
     }, 50);
   }
 
@@ -106,7 +132,7 @@ export default function CreateRecipe() {
       return;
     }
     if (!categoria) {
-      scrollToField(categoriaRef, 'Selecciona una categoría.');
+      scrollToField(categoriaRef, 'Selecciona una categoría.', false);
       return;
     }
     if (!tiempoMin || Number(tiempoMin) <= 0) {
@@ -118,7 +144,7 @@ export default function CreateRecipe() {
       return;
     }
     if (!dificultad) {
-      scrollToField(dificultadRef, 'Selecciona la dificultad de la receta.');
+      scrollToField(dificultadRef, 'Selecciona la dificultad de la receta.', false);
       return;
     }
     if (ingredientes.some((i) => !i.nombre || !i.unidad || i.cantidad <= 0)) {
@@ -179,19 +205,16 @@ export default function CreateRecipe() {
               <p className="recipe-form__section-title">Información general</p>
 
               <div className="form-group">
-                <label className="form-label" htmlFor="field-titulo">Título *</label>
-                <input
-                  id="field-titulo"
-                  ref={tituloRef}
-                  className="form-input"
-                  value={titulo}
-                  onChange={(e) => setTitulo(e.target.value)}
-                  placeholder="Ej. Pasta al pesto con nueces"
-                />
+                <label className="form-label" htmlFor="field-titulo">
+                  Título *
+                </label>
+                <input id="field-titulo" ref={tituloRef} className="form-input" value={titulo} onChange={(e) => setTitulo(e.target.value)} placeholder="Ej. Pasta al pesto con nueces" />
               </div>
 
               <div className="form-group">
-                <label className="form-label" htmlFor="field-descripcion">Descripción *</label>
+                <label className="form-label" htmlFor="field-descripcion">
+                  Descripción *
+                </label>
                 <textarea
                   id="field-descripcion"
                   ref={descripcionRef}
@@ -204,64 +227,42 @@ export default function CreateRecipe() {
               </div>
 
               <div className="form-group">
-                <label className="form-label" htmlFor="field-categoria">Categoría *</label>
-                <select
-                  id="field-categoria"
-                  ref={categoriaRef}
-                  className="form-select"
-                  value={categoria}
-                  onChange={(e) => setCategoria(e.target.value)}
-                >
-                  <option value="">Selecciona una categoría…</option>
-                  {CATEGORIAS.map((c) => (
-                    <option key={c} value={c}>{c}</option>
-                  ))}
-                </select>
+                <label className="form-label">Categoría *</label>
+                <div ref={categoriaRef}>
+                  <CustomSelect
+                    id="field-categoria"
+                    value={categoria}
+                    onChange={setCategoria}
+                    options={[{ value: '', label: 'Selecciona una categoría…' }, ...CATEGORIAS.map((c) => ({ value: c, label: c }))]}
+                  />
+                </div>
               </div>
 
               <div className="time-portions-grid">
                 <div className="form-group">
-                  <label className="form-label" htmlFor="field-tiempo">Tiempo (min) *</label>
-                  <input
-                    id="field-tiempo"
-                    ref={tiempoRef}
-                    className="form-input"
-                    type="number"
-                    min={1}
-                    value={tiempoMin}
-                    onChange={(e) => setTiempoMin(e.target.value)}
-                    placeholder="30"
-                  />
+                  <label className="form-label" htmlFor="field-tiempo">
+                    Tiempo (min) *
+                  </label>
+                  <input id="field-tiempo" ref={tiempoRef} className="form-input" type="number" min={1} value={tiempoMin} onChange={(e) => setTiempoMin(e.target.value)} placeholder="30" />
                 </div>
                 <div className="form-group">
-                  <label className="form-label" htmlFor="field-porciones">Porciones *</label>
-                  <input
-                    id="field-porciones"
-                    ref={porcionesRef}
-                    className="form-input"
-                    type="number"
-                    min={1}
-                    value={porciones}
-                    onChange={(e) => setPorciones(e.target.value)}
-                    placeholder="4"
-                  />
+                  <label className="form-label" htmlFor="field-porciones">
+                    Porciones *
+                  </label>
+                  <input id="field-porciones" ref={porcionesRef} className="form-input" type="number" min={1} value={porciones} onChange={(e) => setPorciones(e.target.value)} placeholder="4" />
                 </div>
               </div>
 
               <div className="form-group">
-                <label className="form-label" htmlFor="field-dificultad">Dificultad *</label>
-                <select
-                  id="field-dificultad"
-                  ref={dificultadRef}
-                  className="form-select"
-                  value={dificultad}
-                  onChange={(e) => setDificultad(e.target.value as typeof dificultad)}
-                >
-                  <option value="">Selecciona…</option>
-                  {DIFICULTADES.map((d) => (
-                    <option key={d} value={d}>{d}</option>
-                  ))}
-                </select>
+                <label className="form-label">Dificultad *</label>
+                <div ref={dificultadRef}>
+                  <CustomSelect
+                    id="field-dificultad"
+                    value={dificultad}
+                    onChange={(v) => setDificultad(v as typeof dificultad)}
+                    options={[{ value: '', label: 'Selecciona…' }, ...DIFICULTADES.map((d) => ({ value: d, label: d }))]}
+                  />
+                </div>
               </div>
 
               <div className="form-group">
@@ -316,7 +317,46 @@ export default function CreateRecipe() {
                           value={ing.cantidad || ''}
                           onChange={(e) => updateIngrediente(ing.id, 'cantidad', parseFloat(e.target.value) || 0)}
                         />
-                        <input className="form-input" placeholder="Unidad" value={ing.unidad} onChange={(e) => updateIngrediente(ing.id, 'unidad', e.target.value)} />
+                        <select className="form-select form-select--unit" value={ing.unidad} onChange={(e) => updateIngrediente(ing.id, 'unidad', e.target.value)}>
+                          <option value="">Unidad</option>
+                          <optgroup label="Volumen">
+                            <option>ml</option>
+                            <option>L</option>
+                            <option>taza</option>
+                            <option>tazas</option>
+                            <option>cucharada</option>
+                            <option>cucharadita</option>
+                          </optgroup>
+                          <optgroup label="Peso">
+                            <option>g</option>
+                            <option>kg</option>
+                            <option>lb</option>
+                            <option>oz</option>
+                          </optgroup>
+                          <optgroup label="Conteo">
+                            <option>unidad</option>
+                            <option>unidades</option>
+                            <option>pieza</option>
+                            <option>piezas</option>
+                            <option>diente</option>
+                            <option>dientes</option>
+                            <option>hoja</option>
+                            <option>hojas</option>
+                            <option>ramita</option>
+                          </optgroup>
+                          <optgroup label="Otros">
+                            <option>al gusto</option>
+                            <option>pizca</option>
+                            <option>puñado</option>
+                            <option>manojo</option>
+                            <option>rebanada</option>
+                            <option>rebanadas</option>
+                            <option>trozo</option>
+                            <option>trozos</option>
+                            <option>lata</option>
+                            <option>paquete</option>
+                          </optgroup>
+                        </select>
                       </div>
                       {ingredientes.length > 1 && (
                         <button type="button" className="btn-remove" onClick={() => removeIngrediente(ing.id)}>

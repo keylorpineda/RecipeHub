@@ -837,6 +837,19 @@ p {
   background: #fff;
   color: #1a1814;
 }
+/* Select compacto de unidades en filas de ingredientes */
+.form-select--unit {
+  padding: 12px 28px 12px 14px;
+  background-position: right 10px center;
+  font-size: var(--text-sm);
+}
+.form-select--unit optgroup {
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+.form-select--unit option {
+  font-weight: 400;
+}
 .form-error {
   font-size: var(--text-xs);
   color: var(--color-error);
@@ -1913,7 +1926,7 @@ p {
 }
 .ingredient-row {
   display: grid;
-  grid-template-columns: 1fr 100px 110px;
+  grid-template-columns: 1fr 90px 130px;
   gap: 12px;
   flex: 1;
 }

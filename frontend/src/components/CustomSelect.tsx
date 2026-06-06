@@ -6,9 +6,10 @@ interface CustomSelectProps {
   options: { value: string; label: string }[];
   style?: React.CSSProperties;
   className?: string;
+  id?: string;
 }
 
-export default function CustomSelect({ value, onChange, options, style, className }: CustomSelectProps) {
+export default function CustomSelect({ value, onChange, options, style, className, id }: CustomSelectProps) {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -25,15 +26,11 @@ export default function CustomSelect({ value, onChange, options, style, classNam
   const selectedOption = options.find((o) => o.value === value) || options[0];
 
   return (
-    <div ref={containerRef} className={`custom-select-container ${className || ''}`} style={style}>
-      <button
-        type="button"
-        className={`form-select custom-select-trigger ${open ? 'custom-select-trigger--open' : ''}`}
-        onClick={() => setOpen(!open)}
-      >
+    <div ref={containerRef} id={id} className={`custom-select-container ${className || ''}`} style={style}>
+      <button type="button" className={`form-select custom-select-trigger ${open ? 'custom-select-trigger--open' : ''}`} onClick={() => setOpen(!open)}>
         <span>{selectedOption.label}</span>
       </button>
-      
+
       {open && (
         <div className="custom-select-dropdown">
           <ul className="custom-select-list">

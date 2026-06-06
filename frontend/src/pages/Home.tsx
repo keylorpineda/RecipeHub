@@ -6,7 +6,33 @@ import RecipeCard from '../components/RecipeCard';
 import SkeletonCard from '../components/SkeletonCard';
 import CustomSelect from '../components/CustomSelect';
 
-const CATEGORIAS = ['Todas', 'Italiana', 'Mexicana', 'Asiática', 'Mediterránea', 'Española', 'Francesa', 'Postres', 'Vegana'];
+const CATEGORIAS = [
+  'Todas',
+  'Italiana',
+  'Mexicana',
+  'Asiática',
+  'Japonesa',
+  'China',
+  'India',
+  'Mediterránea',
+  'Española',
+  'Francesa',
+  'Americana',
+  'Latinoamericana',
+  'Griega',
+  'Árabe',
+  'Postres',
+  'Panadería',
+  'Desayunos',
+  'Sopas y Caldos',
+  'Ensaladas',
+  'Mariscos',
+  'Carnes',
+  'Vegana',
+  'Vegetariana',
+  'Sin Gluten',
+  'Otra',
+];
 const DIFICULTADES = ['Todas', 'Fácil', 'Media', 'Difícil'];
 
 function SiteFooter() {
@@ -15,32 +41,37 @@ function SiteFooter() {
       <div className="site-footer__inner">
         <div>
           <span className="site-footer__logo">RecipeHub</span>
-          <p className="site-footer__tagline">
-            Una plataforma editorial dedicada a la alta cocina, recetas de autor
-            y el arte de compartir la mesa.
-          </p>
+          <p className="site-footer__tagline">Una plataforma editorial dedicada a la alta cocina, recetas de autor y el arte de compartir la mesa.</p>
         </div>
         <div>
           <p className="site-footer__heading">Explorar</p>
           <div className="site-footer__links">
-            <Link to="/" className="site-footer__link">Todas las recetas</Link>
-            <Link to="/nueva" className="site-footer__link">Publicar receta</Link>
-            <Link to="/perfil" className="site-footer__link">Mi perfil</Link>
+            <Link to="/" className="site-footer__link">
+              Todas las recetas
+            </Link>
+            <Link to="/nueva" className="site-footer__link">
+              Publicar receta
+            </Link>
+            <Link to="/perfil" className="site-footer__link">
+              Mi perfil
+            </Link>
           </div>
         </div>
         <div>
           <p className="site-footer__heading">Cuenta</p>
           <div className="site-footer__links">
-            <Link to="/login" className="site-footer__link">Iniciar sesión</Link>
-            <Link to="/register" className="site-footer__link">Registrarse</Link>
+            <Link to="/login" className="site-footer__link">
+              Iniciar sesión
+            </Link>
+            <Link to="/register" className="site-footer__link">
+              Registrarse
+            </Link>
           </div>
         </div>
       </div>
       <div className="site-footer__bottom">
         <span>© {new Date().getFullYear()} RecipeHub — Todos los derechos reservados</span>
-        <span style={{ fontStyle: 'italic', letterSpacing: '0.04em' }}>
-          Alta cocina, compartida.
-        </span>
+        <span style={{ fontStyle: 'italic', letterSpacing: '0.04em' }}>Alta cocina, compartida.</span>
       </div>
     </footer>
   );
@@ -72,13 +103,11 @@ export default function Home() {
     return r.titulo.toLowerCase().includes(q) || r.tags.some((t) => t.toLowerCase().includes(q));
   });
 
-  const sorted = [...filtered].sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
+  const sorted = [...filtered].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
-  const featured  = sorted[0] ?? null;
+  const featured = sorted[0] ?? null;
   const secondary = sorted[1] ?? null;
-  const rest      = sorted.slice(2);
+  const rest = sorted.slice(2);
 
   return (
     <>
@@ -86,10 +115,7 @@ export default function Home() {
         {/* ═══════════════════════════════════════════════
             HERO — split editorial
             ═══════════════════════════════════════════════ */}
-        <section
-          style={{ paddingTop: 'calc(56px + 44px)' }}
-          aria-label="Receta destacada"
-        >
+        <section style={{ paddingTop: 'calc(56px + 44px)' }} aria-label="Receta destacada">
           {!loading && featured ? (
             <div className="hero__split">
               {/* Left — image */}
@@ -97,12 +123,21 @@ export default function Home() {
                 {featured.imagenUrl ? (
                   <img src={featured.imagenUrl} alt={featured.titulo} />
                 ) : (
-                  <div style={{
-                    width: '100%', height: '100%', minHeight: 520,
-                    background: 'var(--color-surface-mid)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: '5rem', color: 'var(--color-border-strong)',
-                  }}>🍽️</div>
+                  <div
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      minHeight: 520,
+                      background: 'var(--color-surface-mid)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '5rem',
+                      color: 'var(--color-border-strong)',
+                    }}
+                  >
+                    🍽️
+                  </div>
                 )}
               </div>
 
@@ -125,13 +160,17 @@ export default function Home() {
                 <div className="hero__split-meta">
                   <div className="hero__split-meta-item">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                      <circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" />
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="M12 6v6l4 2" />
                     </svg>
                     <strong>{featured.tiempoMin}</strong>&nbsp;min
                   </div>
                   <div className="hero__split-meta-item">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                      <circle cx="9" cy="7" r="4" />
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                     </svg>
                     <strong>{featured.porciones}</strong>&nbsp;porciones
                   </div>
@@ -175,29 +214,33 @@ export default function Home() {
                 <Link
                   to={`/recetas/${secondary._id}`}
                   style={{
-                    display: 'flex', gap: 20, alignItems: 'center',
-                    flex: '0 0 auto', maxWidth: 420,
-                    textDecoration: 'none', color: 'inherit',
+                    display: 'flex',
+                    gap: 20,
+                    alignItems: 'center',
+                    flex: '0 0 auto',
+                    maxWidth: 420,
+                    textDecoration: 'none',
+                    color: 'inherit',
                     borderRight: '1px solid var(--color-border)',
                     paddingRight: 40,
                   }}
                 >
                   {secondary.imagenUrl && (
-                    <div style={{
-                      width: 80, height: 80, flexShrink: 0,
-                      overflow: 'hidden', background: 'var(--color-surface)',
-                    }}>
-                      <img src={secondary.imagenUrl} alt={secondary.titulo}
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <div
+                      style={{
+                        width: 80,
+                        height: 80,
+                        flexShrink: 0,
+                        overflow: 'hidden',
+                        background: 'var(--color-surface)',
+                      }}
+                    >
+                      <img src={secondary.imagenUrl} alt={secondary.titulo} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     </div>
                   )}
                   <div>
-                    <span style={{ fontSize: '0.58rem', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--color-text-muted)' }}>
-                      También destacado
-                    </span>
-                    <p style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', fontWeight: 700, lineHeight: 1.2, marginTop: 5, color: 'var(--color-ink)' }}>
-                      {secondary.titulo}
-                    </p>
+                    <span style={{ fontSize: '0.58rem', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--color-text-muted)' }}>También destacado</span>
+                    <p style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', fontWeight: 700, lineHeight: 1.2, marginTop: 5, color: 'var(--color-ink)' }}>{secondary.titulo}</p>
                     <span style={{ fontSize: '0.65rem', color: 'var(--color-text-muted)', marginTop: 4, display: 'block' }}>
                       {secondary.tiempoMin} min · {secondary.categoria}
                     </span>
@@ -214,25 +257,19 @@ export default function Home() {
                       <line x1="10.5" y1="10.5" x2="14" y2="14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                     </svg>
                   </span>
-                  <input
-                    className="form-input"
-                    type="search"
-                    placeholder="Buscar receta o etiqueta…"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                  />
+                  <input className="form-input" type="search" placeholder="Buscar receta o etiqueta…" value={search} onChange={(e) => setSearch(e.target.value)} />
                 </div>
                 <CustomSelect
                   style={{ flex: '0 1 165px' }}
                   value={categoria}
                   onChange={(val) => setCategoria(val)}
-                  options={CATEGORIAS.map(c => ({ value: c, label: c === 'Todas' ? 'Categoría' : c }))}
+                  options={CATEGORIAS.map((c) => ({ value: c, label: c === 'Todas' ? 'Categoría' : c }))}
                 />
                 <CustomSelect
                   style={{ flex: '0 1 155px' }}
                   value={dificultad}
                   onChange={(val) => setDificultad(val)}
-                  options={DIFICULTADES.map(d => ({ value: d, label: d === 'Todas' ? 'Dificultad' : d }))}
+                  options={DIFICULTADES.map((d) => ({ value: d, label: d === 'Todas' ? 'Dificultad' : d }))}
                 />
               </div>
             </div>
@@ -245,13 +282,7 @@ export default function Home() {
         <section style={{ paddingTop: 56, paddingBottom: 0 }}>
           <div className="container">
             <div className="section-header">
-              <h2>
-                {loading
-                  ? 'Cargando…'
-                  : categoria !== 'Todas' || dificultad !== 'Todas' || search
-                  ? 'Resultados'
-                  : 'Las más recientes'}
-              </h2>
+              <h2>{loading ? 'Cargando…' : categoria !== 'Todas' || dificultad !== 'Todas' || search ? 'Resultados' : 'Las más recientes'}</h2>
               {!loading && (
                 <span className="results-count">
                   {filtered.length} receta{filtered.length !== 1 ? 's' : ''}
@@ -261,7 +292,9 @@ export default function Home() {
 
             {loading ? (
               <div className="recipe-grid">
-                {Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)}
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <SkeletonCard key={i} />
+                ))}
               </div>
             ) : filtered.length === 0 ? (
               <div className="empty-state">
@@ -272,17 +305,9 @@ export default function Home() {
             ) : (
               <div className="recipe-grid">
                 {/* If searching, show all filtered; otherwise skip featured+secondary */}
-                {(search || categoria !== 'Todas' || dificultad !== 'Todas' ? filtered : rest).map(
-                  (recipe, i) => (
-                    <RecipeCard
-                      key={recipe._id}
-                      {...recipe}
-                      comentarios={[]}
-                      index={i}
-                      wide={false}
-                    />
-                  )
-                )}
+                {(search || categoria !== 'Todas' || dificultad !== 'Todas' ? filtered : rest).map((recipe, i) => (
+                  <RecipeCard key={recipe._id} {...recipe} comentarios={[]} index={i} wide={false} />
+                ))}
               </div>
             )}
           </div>
@@ -301,18 +326,21 @@ export default function Home() {
                 <div style={{ flex: 1, height: '1px', background: 'var(--color-border)' }} />
               </div>
 
-              <p style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(1.3rem, 2.5vw, 2rem)',
-                fontStyle: 'italic',
-                fontWeight: 400,
-                lineHeight: 1.55,
-                color: 'var(--color-ink)',
-                letterSpacing: '-0.01em',
-                marginBottom: 28,
-              }}>
+              <p
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 'clamp(1.3rem, 2.5vw, 2rem)',
+                  fontStyle: 'italic',
+                  fontWeight: 400,
+                  lineHeight: 1.55,
+                  color: 'var(--color-ink)',
+                  letterSpacing: '-0.01em',
+                  marginBottom: 28,
+                }}
+              >
                 "La cocina es el único lugar donde puedes crear algo hermoso
-                <br />con tus propias manos y compartirlo con quien amas."
+                <br />
+                con tus propias manos y compartirlo con quien amas."
               </p>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginTop: 28 }}>
