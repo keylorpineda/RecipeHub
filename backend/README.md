@@ -83,10 +83,31 @@ Los tests usan una base de datos separada (`recipehub_test`). Puedes sobreescrib
 | `POST`   | `/api/recetas/:id/comentarios` | Sí   | Agregar comentario                                          |
 | `DELETE` | `/api/comentarios/:id`         | Sí   | Eliminar comentario (solo el autor)                         |
 
-Las rutas protegidas leen el JWT desde la **cookie HttpOnly `token`** que el backend establece automáticamente al hacer login o registro. No es necesario enviar ningún header manual desde el navegador.
+### Método primario — Cookie HttpOnly (navegador / producción)
 
-Para probar desde Postman o en los tests de integración, el middleware también acepta el header como fallback:
+El backend establece automáticamente una cookie `token` con `HttpOnly: true` al hacer login o registro. El navegador la reenvía en cada request sin que el frontend toque el token.
+
+El frontend configura `withCredentials: true` en axios para que esto funcione:
+
+```ts
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
+  withCredentials: true, // envía la cookie automáticamente
+});
+```
+
+**Nunca uses `localStorage` ni `sessionStorage` para guardar el JWT.**
+
+### Método alternativo — Header Authorization (Postman / tests)
+
+Para pruebas con Postman o en los tests de integración, el middleware también acepta el header como fallback. Primero hace login para obtener el token del body de respuesta, luego úsalo así:
 
 ```
 Authorization: Bearer <token>
 ```
+
+En Postman:
+
+1. `POST /api/auth/login` → copia el valor de `token` de la respuesta (o activa "Save cookies" para que Postman gestione la cookie automáticamente).
+2. En la pestaña **Authorization** selecciona **Bearer Token** y pega el valor.
+3. Envía el request a la ruta protegida.

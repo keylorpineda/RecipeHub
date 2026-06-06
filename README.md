@@ -171,17 +171,16 @@ curl https://api.recipehub.me/api/health
 
 ### 10. Configurar GitHub Actions
 
-En **GitHub → Settings → Secrets and variables → Actions → New repository secret**, agregar exactamente estos 5 secrets:
+En **GitHub → Settings → Secrets and variables → Actions → New repository secret**, agregar exactamente estos 6 secrets:
 
-| Secret        | Descripción                    | Cómo obtenerlo                                                            |
-| ------------- | ------------------------------ | ------------------------------------------------------------------------- |
-| `VPS_HOST`    | IP pública del VPS             | Panel de control del proveedor (DigitalOcean, Hetzner, etc.)              |
-| `VPS_USER`    | Usuario SSH del VPS            | Normalmente `root` en un VPS nuevo                                        |
-| `VPS_SSH_KEY` | Llave privada SSH completa     | Contenido de `~/.ssh/id_ed25519` (o `id_rsa`) en tu máquina local         |
-| `MONGO_URI`   | URI de conexión a MongoDB      | `mongodb://mongo_user:TU_PASSWORD@mongo:27017/recipehub?authSource=admin` |
-| `JWT_SECRET`  | Secreto para firmar tokens JWT | Generar con: `openssl rand -base64 48`                                    |
-
-> **Importante:** `MONGO_ROOT_PASSWORD` ya **no** es un secret de GitHub — su valor está fijo en el script del workflow (`mongo_pass_seguro`). Solo los datos verdaderamente sensibles van como secrets.
+| Secret                | Descripción                          | Cómo obtenerlo                                                            |
+| --------------------- | ------------------------------------ | ------------------------------------------------------------------------- |
+| `VPS_HOST`            | IP pública del VPS                   | Panel de control del proveedor (DigitalOcean, Hetzner, etc.)              |
+| `VPS_USER`            | Usuario SSH del VPS                  | Normalmente `root` en un VPS nuevo                                        |
+| `VPS_SSH_KEY`         | Llave privada SSH completa           | Contenido de `~/.ssh/id_ed25519` (o `id_rsa`) en tu máquina local         |
+| `MONGO_URI`           | URI de conexión a MongoDB            | `mongodb://mongo_user:TU_PASSWORD@mongo:27017/recipehub?authSource=admin` |
+| `JWT_SECRET`          | Secreto para firmar tokens JWT       | Generar con: `openssl rand -base64 48`                                    |
+| `MONGO_ROOT_PASSWORD` | Contraseña root de MongoDB en el VPS | Elige una contraseña segura; debe coincidir con la usada en `MONGO_URI`   |
 
 A partir de aquí cada `push` a `main` dispara el pipeline automáticamente: tests → deploy → health check.
 
