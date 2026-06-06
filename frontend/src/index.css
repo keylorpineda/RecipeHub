@@ -1563,8 +1563,8 @@ p {
 .recipe-detail__hero {
   position: relative;
   /* Adapta la altura según el ancho de la ventana:
-     mínimo 220px · preferido 36vw · máximo 420px */
-  height: clamp(220px, 36vw, 420px);
+     mínimo 180px · preferido 26vw · máximo 320px */
+  height: clamp(180px, 26vw, 320px);
   overflow: hidden;
   margin-bottom: 0;
 }
@@ -2503,7 +2503,7 @@ p {
     padding: 28px 28px;
   }
   .recipe-detail__hero {
-    height: clamp(200px, 42vw, 340px);
+    height: clamp(160px, 32vw, 260px);
   }
 
   .recipe-form {
@@ -2549,7 +2549,7 @@ p {
     gap: 24px 14px;
   }
   .recipe-detail__hero {
-    height: clamp(180px, 48vw, 260px);
+    height: clamp(140px, 44vw, 220px);
     margin-bottom: 0;
   }
   .detail-card {
