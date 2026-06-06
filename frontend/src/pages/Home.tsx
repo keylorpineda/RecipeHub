@@ -4,6 +4,7 @@ import api from '../api/axios';
 import type { IRecipe } from '../types';
 import RecipeCard from '../components/RecipeCard';
 import SkeletonCard from '../components/SkeletonCard';
+import CustomSelect from '../components/CustomSelect';
 
 const CATEGORIAS = ['Todas', 'Italiana', 'Mexicana', 'Asiática', 'Mediterránea', 'Española', 'Francesa', 'Postres', 'Vegana'];
 const DIFICULTADES = ['Todas', 'Fácil', 'Media', 'Difícil'];
@@ -221,12 +222,20 @@ export default function Home() {
                     onChange={(e) => setSearch(e.target.value)}
                   />
                 </div>
-                <select className="form-select" value={categoria} onChange={(e) => setCategoria(e.target.value)} style={{ flex: '0 1 165px' }}>
-                  {CATEGORIAS.map((c) => <option key={c} value={c}>{c === 'Todas' ? 'Categoría' : c}</option>)}
-                </select>
-                <select className="form-select" value={dificultad} onChange={(e) => setDificultad(e.target.value)} style={{ flex: '0 1 155px' }}>
-                  {DIFICULTADES.map((d) => <option key={d} value={d}>{d === 'Todas' ? 'Dificultad' : d}</option>)}
-                </select>
+                <CustomSelect
+                  className="form-select"
+                  style={{ flex: '0 1 165px' }}
+                  value={categoria}
+                  onChange={(val) => setCategoria(val)}
+                  options={CATEGORIAS.map(c => ({ value: c, label: c === 'Todas' ? 'Categoría' : c }))}
+                />
+                <CustomSelect
+                  className="form-select"
+                  style={{ flex: '0 1 155px' }}
+                  value={dificultad}
+                  onChange={(val) => setDificultad(val)}
+                  options={DIFICULTADES.map(d => ({ value: d, label: d === 'Todas' ? 'Dificultad' : d }))}
+                />
               </div>
             </div>
           </div>

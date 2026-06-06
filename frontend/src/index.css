@@ -784,6 +784,55 @@ p { text-wrap: pretty; }
   padding-right: 48px;
 }
 
+/* Custom Select Component */
+.custom-select-container {
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.custom-select-trigger {
+  width: 100%;
+  text-align: left;
+  background-color: var(--color-bg-pure);
+}
+.custom-select-trigger--open {
+  border-color: var(--color-gold) !important;
+  box-shadow: 0 0 0 3px var(--color-gold-dim) !important;
+}
+.custom-select-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--color-bg-pure);
+  border: 1px solid var(--color-border-mid);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 10px 25px rgba(26, 24, 20, 0.08);
+  overflow: hidden;
+}
+.custom-select-list {
+  margin: 0;
+  padding: 6px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+.custom-select-option {
+  padding: 10px 16px;
+  font-size: var(--text-sm);
+  color: var(--color-ink);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 150ms ease, color 150ms ease;
+}
+.custom-select-option:hover {
+  background: var(--color-bg-secondary);
+}
+.custom-select-option--selected {
+  background: var(--color-surface-mid);
+  font-weight: 500;
+}
+
 /* ══════════════════════════════════════════════════════════════════
    RECIPE CARD — editorial magazine card
    ══════════════════════════════════════════════════════════════════ */
