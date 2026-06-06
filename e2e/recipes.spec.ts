@@ -1,4 +1,4 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect, type Page, APIRequestContext } from '@playwright/test';
 
 const timestamp = Date.now();
 const AUTHOR_EMAIL = `author_${timestamp}@example.com`;
@@ -7,7 +7,7 @@ const PASSWORD = 'TestPass123!';
 const API_URL = 'https://api.recipehub.me';
 
 /** Skip the test if the API is not reachable (runs fine in CI after deploy). */
-async function requireApi(request: Parameters<Parameters<typeof test>[1]>[0]['request']) {
+async function requireApi(request: APIRequestContext) {
   try {
     const res = await request.get(`${API_URL}/api/health`, { timeout: 8000 });
     if (!res.ok()) test.skip(true, `API not healthy (${res.status()}) — skipping`);

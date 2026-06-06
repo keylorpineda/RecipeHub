@@ -1,9 +1,9 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, APIRequestContext } from '@playwright/test';
 
 const API_URL = 'https://api.recipehub.me';
 
 /** Check API reachability once and skip tests if it's not accessible. */
-async function requireApi(request: Parameters<Parameters<typeof test>[1]>[0]['request']) {
+async function requireApi(request: APIRequestContext) {
   try {
     const res = await request.get(`${API_URL}/api/health`, { timeout: 8000 });
     if (!res.ok()) test.skip(true, `API responded with ${res.status()} — skipping health tests`);
