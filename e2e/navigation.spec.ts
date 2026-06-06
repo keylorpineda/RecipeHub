@@ -53,8 +53,8 @@ test.describe('Navigation', () => {
     await page.goto('/');
     const hamburger = page.locator('button[aria-label*="menú" i], button[class*="hamburger"]');
     await hamburger.click();
-    // The mobile drawer should now be visible (has "is-open" class or aria-hidden=false)
-    const drawer = page.locator('#mobile-menu, [class*="mobile-menu"]');
+    // Use #mobile-menu specifically to avoid matching the inner divider element
+    const drawer = page.locator('#mobile-menu');
     await expect(drawer).toBeVisible({ timeout: 2000 });
   });
 
@@ -64,9 +64,11 @@ test.describe('Navigation', () => {
     const hamburger = page.locator('button[aria-label*="menú" i], button[class*="hamburger"]');
     await hamburger.click();
 
-    // Click the "Inicio" link inside the drawer
-    const drawer = page.locator('#mobile-menu');
-    await drawer.getByRole('link', { name: /^inicio$/i }).click();
+    // Click the "Inicio" link inside the drawer (use #mobile-menu to target only the drawer)
+    await page
+      .locator('#mobile-menu')
+      .getByRole('link', { name: /^inicio$/i })
+      .click();
 
     // After navigation the drawer should close
     await expect(page).toHaveURL('/');
