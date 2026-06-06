@@ -1185,6 +1185,13 @@ p {
   left: 0;
   right: 0;
   z-index: 200;
+}
+/* Abre hacia arriba cuando no hay espacio debajo */
+.custom-select-dropdown--up {
+  top: auto;
+  bottom: calc(100% + 8px);
+}
+.custom-select-dropdown {
   z-index: 100;
   background: var(--color-bg-pure);
   border: 1px solid var(--color-border-mid);
