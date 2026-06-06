@@ -144,7 +144,7 @@ export default function EditRecipe() {
                 <label className="form-label">Categoría *</label>
                 <input className="form-input" value={categoria} onChange={(e) => setCategoria(e.target.value)} required />
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+              <div className="time-portions-grid">
                 <div className="form-group">
                   <label className="form-label">Tiempo (min) *</label>
                   <input className="form-input" type="number" min={1} value={tiempoMin} onChange={(e) => setTiempoMin(e.target.value)} required />

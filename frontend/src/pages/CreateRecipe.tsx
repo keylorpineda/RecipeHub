@@ -151,7 +151,7 @@ export default function CreateRecipe() {
                 <label className="form-label">Categoría *</label>
                 <input className="form-input" value={categoria} onChange={(e) => setCategoria(e.target.value)} placeholder="Ej. Italiana, Postres, Vegana…" required />
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+              <div className="time-portions-grid">
                 <div className="form-group">
                   <label className="form-label">Tiempo (min) *</label>
                   <input className="form-input" type="number" min={1} value={tiempoMin} onChange={(e) => setTiempoMin(e.target.value)} placeholder="30" required />
@@ -175,24 +175,24 @@ export default function CreateRecipe() {
               <div className="form-group">
                 <label className="form-label">Imagen de la receta</label>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  <input 
-                    type="file" 
-                    accept="image/*" 
-                    onChange={handleImageUpload} 
-                    disabled={isUploadingImage}
-                    className="form-input"
-                  />
+                  <input type="file" accept="image/*" onChange={handleImageUpload} disabled={isUploadingImage} className="form-input" />
                   {isUploadingImage && <span className="form-hint">Subiendo imagen de forma segura...</span>}
-                  {imageError && <span className="form-hint" style={{ color: '#d32f2f' }}>{imageError}</span>}
-                  
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
+                  {imageError && (
+                    <span className="form-hint" style={{ color: '#d32f2f' }}>
+                      {imageError}
+                    </span>
+                  )}
+
+                  <div className="image-url-row">
                     <span className="form-hint">O pega un enlace:</span>
                     <input className="form-input" style={{ flex: 1 }} type="url" value={imagenUrl} onChange={(e) => setImagenUrl(e.target.value)} placeholder="https://…" />
                   </div>
                 </div>
                 {imagenUrl && (
                   <div style={{ marginTop: '12px' }}>
-                    <p className="form-hint" style={{ marginBottom: '4px' }}>Vista previa:</p>
+                    <p className="form-hint" style={{ marginBottom: '4px' }}>
+                      Vista previa:
+                    </p>
                     <img src={imagenUrl} alt="Vista previa" style={{ maxWidth: '100%', maxHeight: '200px', borderRadius: '8px', objectFit: 'cover' }} />
                   </div>
                 )}

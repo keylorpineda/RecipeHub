@@ -48,7 +48,7 @@ export default function Profile() {
             <p>{user?.email}</p>
             {user?.bio && <p style={{ marginTop: 8, color: 'var(--color-text-secondary)' }}>{user.bio}</p>}
           </div>
-          <div style={{ marginLeft: 'auto', display: 'flex', gap: 12, alignSelf: 'center' }}>
+          <div className="profile-actions">
             <Link to="/nueva" className="btn btn-primary btn-sm">
               + Nueva receta
             </Link>
