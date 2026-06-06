@@ -88,10 +88,14 @@ export default function Register() {
         </div>
       </div>
 
-      {/* Panel derecho — arte */}
+      {/* Panel derecho — arte editorial */}
       <div className="auth-page__art">
+        <div className="auth-page__art-deco" />
+        <span className="auth-page__art-issue">RecipeHub · Alta Cocina</span>
         <span className="auth-page__art-logo">RecipeHub</span>
-        <p className="auth-page__art-quote">"La mejor receta siempre lleva tiempo, paciencia y mucho amor."</p>
+        <p className="auth-page__art-quote">
+          "La mejor receta siempre lleva tiempo, paciencia y mucho amor."
+        </p>
       </div>
     </div>
   );

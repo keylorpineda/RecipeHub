@@ -76,10 +76,14 @@ export default function Login() {
         </div>
       </div>
 
-      {/* Panel derecho — arte */}
+      {/* Panel derecho — arte editorial */}
       <div className="auth-page__art">
+        <div className="auth-page__art-deco" />
+        <span className="auth-page__art-issue">RecipeHub · Alta Cocina</span>
         <span className="auth-page__art-logo">RecipeHub</span>
-        <p className="auth-page__art-quote">"Cocinar es un acto de amor que se comparte con quienes nos importan."</p>
+        <p className="auth-page__art-quote">
+          "Cocinar es un acto de amor que se comparte con quienes nos importan."
+        </p>
       </div>
     </div>
   );
