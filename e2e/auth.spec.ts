@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, APIRequestContext } from '@playwright/test';
 
 // Use a unique email per test run to avoid conflicts with existing test data
 const timestamp = Date.now();
@@ -9,7 +9,7 @@ const TEST_NAME = 'E2E User';
 const API_URL = 'https://api.recipehub.me';
 
 /** Skip the test if the API is not reachable (runs fine in CI after deploy). */
-async function requireApi(request: Parameters<Parameters<typeof test>[1]>[0]['request']) {
+async function requireApi(request: APIRequestContext) {
   try {
     const res = await request.get(`${API_URL}/api/health`, { timeout: 8000 });
     if (!res.ok()) test.skip(true, `API not healthy (${res.status()}) — skipping`);
