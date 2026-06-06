@@ -61,18 +61,13 @@ export default function Navbar() {
               </button>
             </>
           ) : !loading ? (
-            <>
-              <Link to="/login" className="navbar__icon-btn">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="8" r="4" />
-                  <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
-                </svg>
-                Iniciar sesión
-              </Link>
-              <Link to="/register" className="navbar__newsletter">
-                Registrarse
-              </Link>
-            </>
+            <Link to="/login" className="navbar__icon-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+              </svg>
+              Iniciar sesión
+            </Link>
           ) : null}
 
           {/* Hamburger — mobile */}
@@ -102,16 +97,6 @@ export default function Navbar() {
             </NavLink>
             <NavLink to="/perfil" className={linkClass}>
               Mi Perfil
-            </NavLink>
-          </>
-        )}
-        {!loading && !isAuthenticated && (
-          <>
-            <NavLink to="/login" className={linkClass}>
-              Iniciar sesión
-            </NavLink>
-            <NavLink to="/register" className={linkClass}>
-              Registrarse
             </NavLink>
           </>
         )}

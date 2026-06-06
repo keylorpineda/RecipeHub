@@ -757,6 +757,33 @@ p { text-wrap: pretty; }
 }
 .filters select { width: auto; min-width: 148px; padding: 8px 36px 8px 14px; font-size: var(--text-sm); }
 
+/* Editorial Search & Filters */
+.home-filters .form-input,
+.home-filters .form-select {
+  border: 1px solid var(--color-border-mid);
+  border-radius: var(--radius-full);
+  padding: 12px 24px;
+  background: var(--color-bg-pure);
+  box-shadow: var(--shadow-xs);
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+  font-size: var(--text-sm);
+}
+.home-filters .search-bar input {
+  padding-left: 48px;
+}
+.home-filters .search-bar__icon {
+  left: 20px;
+}
+.home-filters .form-input:focus,
+.home-filters .form-select:focus {
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 3px var(--color-gold-dim);
+}
+.home-filters .form-select {
+  background-position: right 18px center;
+  padding-right: 48px;
+}
+
 /* ══════════════════════════════════════════════════════════════════
    RECIPE CARD — editorial magazine card
    ══════════════════════════════════════════════════════════════════ */

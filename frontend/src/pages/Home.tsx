@@ -205,7 +205,7 @@ export default function Home() {
               )}
 
               {/* Search & filters */}
-              <div style={{ flex: 1, display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+              <div className="home-filters" style={{ flex: 1, display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
                 <div className="search-bar" style={{ flex: '1 1 240px', marginBottom: 0 }}>
                   <span className="search-bar__icon">
                     <svg width="13" height="13" viewBox="0 0 15 15" fill="none">
