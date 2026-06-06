@@ -60,7 +60,8 @@ coverage/
 
 # ── Claude Code / AI tools ─────────────────────────────────────────────────────
 .agents/
-.claude/launch.json
+.claude/
+frontend/.claude/
 .impeccable/
 PRODUCT.md
-.claude
+skills-lock.json
