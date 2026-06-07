@@ -37,10 +37,15 @@ export default function CustomSelect({ value, onChange, options, style, classNam
   /* Decidir si abrir hacia arriba o hacia abajo */
   function handleToggle() {
     if (!open && containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      const spaceBelow = window.innerHeight - rect.bottom;
-      const dropdownH = triggerClassName?.includes('compact') ? 200 : 310;
-      setDropUp(spaceBelow < dropdownH);
+      // Los triggers compactos (unidades) siempre abren hacia arriba —
+      // siempre están al final del formulario y el espacio abajo es insuficiente.
+      if (triggerClassName?.includes('compact')) {
+        setDropUp(true);
+      } else {
+        const rect = containerRef.current.getBoundingClientRect();
+        const spaceBelow = window.innerHeight - rect.bottom;
+        setDropUp(spaceBelow < 310);
+      }
     }
     setOpen((o) => !o);
   }
