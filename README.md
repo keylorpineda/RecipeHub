@@ -328,8 +328,3 @@ Se ejecutan automáticamente en GitHub Actions **después** del deploy SSH.
 
 Los tests de integración y unitarios del backend se ejecutan en cada push via GitHub Actions con servicio MongoDB.
 
-## 📄 Licencia
-
----
-
-Proyecto académico — **Universidad Nacional, Sede Regional Brunca**, I Semestre 2026
