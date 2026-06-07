@@ -26,7 +26,39 @@ async function registerAndLogin(page: Page, nombre: string, email: string) {
   await page.waitForURL((url) => !url.pathname.startsWith('/register'), { timeout: 10000 });
 }
 
+/** Elimina todas las recetas cuyo título contenga "E2E" (pagina hasta vaciar). */
+async function purgeE2ERecipes(request: APIRequestContext) {
+  try {
+    let page = 1;
+    const limit = 100;
+    let found = true;
+    while (found) {
+      const res = await request.get(`${API_URL}/api/recetas?limit=${limit}&page=${page}`, { timeout: 10000 });
+      if (!res.ok()) break;
+      const body = await res.json();
+      const recipes: { _id: string; titulo: string }[] = body.recetas ?? body ?? [];
+      if (recipes.length === 0) break;
+      found = false;
+      for (const r of recipes) {
+        if (/E2E/i.test(r.titulo)) {
+          found = true; // hay más páginas potenciales
+          await request.delete(`${API_URL}/api/recetas/${r._id}`).catch(() => {});
+        }
+      }
+      if (recipes.length < limit) break; // última página
+      page++;
+    }
+  } catch {
+    // silencioso — no romper la suite si la API no responde
+  }
+}
+
 test.describe('Recipes — create flow', () => {
+  // Limpia huérfanas de runs anteriores ANTES de empezar
+  test.beforeAll(async ({ request }) => {
+    await purgeE2ERecipes(request);
+  });
+
   test('visiting /nueva unauthenticated redirects to /login', async ({ page }) => {
     await page.goto('/nueva');
     await page.waitForURL(/\/login/, { timeout: 5000 });
@@ -128,23 +160,9 @@ test.describe('Recipes — create flow', () => {
     }
   });
 
-  // Garantía extra: limpiar recetas E2E huérfanas que puedan haber quedado de runs anteriores
+  // Garantía final: barre todo lo que haya quedado con paginación completa
   test.afterAll(async ({ request }) => {
-    try {
-      const res = await request.get(`${API_URL}/api/recetas?limit=100`, { timeout: 8000 });
-      if (!res.ok()) return;
-      const body = await res.json();
-      const recipes: { _id: string; titulo: string }[] = body.recetas ?? body ?? [];
-      for (const r of recipes) {
-        if (/E2E/i.test(r.titulo)) {
-          await request.delete(`${API_URL}/api/recetas/${r._id}`).catch(() => {
-            /* ignore */
-          });
-        }
-      }
-    } catch {
-      // silencioso — no romper la suite si la API no responde
-    }
+    await purgeE2ERecipes(request);
   });
 });
 
