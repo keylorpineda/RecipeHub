@@ -895,8 +895,8 @@ p {
   overflow: hidden;
   /* La proporción de la imagen dicta la altura del hero:
      16:10 → food photography landscape, escala con el viewport */
-  aspect-ratio: 16 / 10;
-  max-height: 540px;
+  aspect-ratio: 16 / 11;
+  max-height: 620px;
 }
 .hero__split-image img {
   width: 100%;
