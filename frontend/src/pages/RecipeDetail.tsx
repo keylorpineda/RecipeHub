@@ -195,6 +195,33 @@ export default function RecipeDetail() {
               </ul>
             </div>
 
+            {/* Info rápida */}
+            <div className="detail-card">
+              <p className="detail-card__title">Información</p>
+              <ul className="recipe-meta-list">
+                <li className="recipe-meta-item">
+                  <span className="recipe-meta-icon">⏱</span>
+                  <span className="recipe-meta-label">Tiempo</span>
+                  <span className="recipe-meta-value">{recipe.tiempoMin} min</span>
+                </li>
+                <li className="recipe-meta-item">
+                  <span className="recipe-meta-icon">🍽</span>
+                  <span className="recipe-meta-label">Porciones</span>
+                  <span className="recipe-meta-value">{recipe.porciones}</span>
+                </li>
+                <li className="recipe-meta-item">
+                  <span className="recipe-meta-icon">📊</span>
+                  <span className="recipe-meta-label">Dificultad</span>
+                  <span className="recipe-meta-value">{recipe.dificultad}</span>
+                </li>
+                <li className="recipe-meta-item">
+                  <span className="recipe-meta-icon">🏷</span>
+                  <span className="recipe-meta-label">Categoría</span>
+                  <span className="recipe-meta-value">{recipe.categoria}</span>
+                </li>
+              </ul>
+            </div>
+
             {/* Tags */}
             {(recipe.tags ?? []).length > 0 && (
               <div className="detail-card">
