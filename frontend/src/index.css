@@ -886,8 +886,6 @@ p {
 .hero__split {
   display: grid;
   grid-template-columns: 56% 44%;
-  min-height: 380px;
-  max-height: 480px;
   border-bottom: 1px solid var(--color-border);
   position: relative;
   overflow: hidden;
@@ -895,11 +893,16 @@ p {
 .hero__split-image {
   position: relative;
   overflow: hidden;
+  /* La proporción de la imagen dicta la altura del hero:
+     16:10 → food photography landscape, escala con el viewport */
+  aspect-ratio: 16 / 10;
+  max-height: 540px;
 }
 .hero__split-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center center;
   display: block;
   transition: transform 800ms var(--ease-out);
 }
@@ -2446,7 +2449,8 @@ p {
     display: none;
   }
   .hero__split-image {
-    min-height: 300px;
+    aspect-ratio: 4 / 3;
+    max-height: 360px;
   }
   .site-footer__inner {
     grid-template-columns: 1fr 1fr;
