@@ -885,7 +885,7 @@ p {
 /* Full-bleed split: image | content */
 .hero__split {
   display: grid;
-  grid-template-columns: 56% 44%;
+  grid-template-columns: 1fr 1fr;
   border-bottom: 1px solid var(--color-border);
   position: relative;
   overflow: hidden;
@@ -893,10 +893,8 @@ p {
 .hero__split-image {
   position: relative;
   overflow: hidden;
-  /* La proporción de la imagen dicta la altura del hero:
-     16:10 → food photography landscape, escala con el viewport */
   aspect-ratio: 4 / 3;
-  max-height: 680px;
+  max-height: 620px;
 }
 .hero__split-image img {
   width: 100%;
@@ -916,7 +914,7 @@ p {
   position: absolute;
   top: 10%;
   bottom: 10%;
-  left: 56%;
+  left: 50%;
   width: 1px;
   background: linear-gradient(to bottom, transparent, var(--color-border-mid), transparent);
   z-index: 2;
@@ -927,7 +925,7 @@ p {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
+  justify-content: space-between;
   padding: 56px 64px;
   background: var(--color-bg-secondary);
   position: relative;
